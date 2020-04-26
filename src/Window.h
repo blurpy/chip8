@@ -20,6 +20,8 @@ public:
 
     void pollEvents();
     bool isClosed();
+
+    void show();
 };
 
 #endif //CHIP8_WINDOW_H

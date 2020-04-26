@@ -6,8 +6,12 @@ Window::Window(const std::string& windowTitle, int width, int height) {
     this->width = width;
     this->height = height;
 
-    if (!this->init()) {
-        closed = true;
+    closed = true;
+}
+
+void Window::show() {
+    if (init()) {
+        closed = false;
     }
 }
 
