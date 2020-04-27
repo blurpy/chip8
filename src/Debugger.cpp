@@ -28,6 +28,7 @@ void Debugger::printOpcodes(const std::unique_ptr<Opcodes> &opcodes, const std::
         Opcodes::OpcodeEntry opcodeEntry = opcodes->findOpcode(opcode);
 
         printf("%04X - %s - %s\n", opcode, opcodeEntry.name.c_str(), opcodeEntry.description.c_str());
+        (opcodes.get()->*opcodeEntry.handler)(opcode);
     }
 
     std::cout << std::endl << std::endl;
