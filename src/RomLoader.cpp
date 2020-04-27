@@ -1,5 +1,6 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
+
 #include "RomLoader.h"
 
 RomLoader::RomLoader(const std::string& fileName) {

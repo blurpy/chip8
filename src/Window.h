@@ -5,6 +5,15 @@
 
 class Window {
 
+public:
+    Window(const std::string& windowTitle, int width, int height);
+    ~Window();
+
+    void pollEvents();
+    bool isClosed() const;
+
+    void show();
+
 private:
     std::string windowTitle;
     int width;
@@ -13,15 +22,6 @@ private:
     bool closed;
 
     bool init();
-
-public:
-    Window(const std::string& windowTitle, int width, int height);
-    ~Window();
-
-    void pollEvents();
-    bool isClosed();
-
-    void show();
 };
 
 #endif //CHIP8_WINDOW_H

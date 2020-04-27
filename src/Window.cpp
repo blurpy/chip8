@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Window.h"
 
 Window::Window(const std::string& windowTitle, int width, int height) {
@@ -6,7 +7,8 @@ Window::Window(const std::string& windowTitle, int width, int height) {
     this->width = width;
     this->height = height;
 
-    closed = true;
+    this->closed = true;
+    this->window = nullptr;
 }
 
 void Window::show() {
@@ -51,6 +53,6 @@ void Window::pollEvents() {
     }
 }
 
-bool Window::isClosed() {
+bool Window::isClosed() const {
     return closed;
 }

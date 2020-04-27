@@ -1,14 +1,13 @@
 #ifndef CHIP8_DEBUGGER_H
 #define CHIP8_DEBUGGER_H
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 class Debugger {
 
 public:
-    void hexPrint(std::vector<uint8_t> vector);
-
+    void hexPrint(const std::vector<uint8_t> &vector);
 };
 
 #endif //CHIP8_DEBUGGER_H
