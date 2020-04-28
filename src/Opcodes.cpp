@@ -19,10 +19,12 @@ void Opcodes::handle0NNN(uint16_t opcode) {
 
 void Opcodes::handle00E0(uint16_t opcode) {
     // Clear screen
+    printf("%04X - %s - Clear screen\n", opcode, "00E0");
 }
 
 void Opcodes::handle00EE(uint16_t opcode) {
     // Return from subroutine
+    printf("%04X - %s - Return from subroutine\n", opcode, "00EE");
 }
 
 void Opcodes::handle1NNN(uint16_t opcode) {
@@ -96,31 +98,57 @@ void Opcodes::handle8XY2(uint16_t opcode) {
 }
 
 void Opcodes::handle8XY3(uint16_t opcode) {
-    // Set VX to VX xor VY
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+
+    // Set VX to VX xor VY. (Bitwise XOR operation)
+    printf("%04X - %s - Set V%01X to V%01X xor V%01X\n", opcode, "8XY3", vx, vx, vy);
 }
 
 void Opcodes::handle8XY4(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+
     // Add VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
+    printf("%04X - %s - Add V%01X to V%01X\n", opcode, "8XY4", vy, vx);
 }
 
 void Opcodes::handle8XY5(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+
     // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't
+    printf("%04X - %s - V%01X is subtracted from V%01X\n", opcode, "8XY5", vy, vx);
 }
 
 void Opcodes::handle8XY6(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+
     // Store the least significant bit of VX in VF and then shifts VX to the right by 1
+    printf("%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n", opcode, "8XY6", vx, vx);
 }
 
 void Opcodes::handle8XY7(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+
     // Set VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't
+    printf("%04X - %s - Set V%01X to V%01X minus V%01X\n", opcode, "8XY7", vx, vy, vx);
 }
 
 void Opcodes::handle8XYE(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+
     // Stores the most significant bit of VX in VF and then shifts VX to the left by 1
+    printf("%04X - %s - Store the most significant bit of V%01X in VF and then shifts V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
 }
 
 void Opcodes::handle9XY0(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+
     // Skips the next instruction if VX doesn't equal VY
+    printf("%04X - %s - Skips the next instruction if V%01X doesn't equal V%01X\n", opcode, "8XY7", vx, vy);
 }
 
 void Opcodes::handleANNN(uint16_t opcode) {
@@ -191,6 +219,7 @@ void Opcodes::handleFX65(uint16_t opcode) {
 
 void Opcodes::handleInvalid(uint16_t opcode) {
     // Invalid opcode
+    printf("%04X - %s - Invalid opcode\n", opcode, "----");
 }
 
 uint16_t Opcodes::getVX(uint16_t opcode) {
