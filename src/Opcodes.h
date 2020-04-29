@@ -21,9 +21,10 @@ public:
 
 private:
     std::vector<OpcodeEntry> opcodeEntries = {
-            {"0NNN", 0x0000, 0xF000, &Opcodes::handle0NNN, "Call RCA 1802 program at address NNN."}, // TODO order
+            // Note: Order of 0xxx opcodes are important to avoid all of them being recognized as 0NNN
             {"00E0", 0x00E0, 0xFFFF, &Opcodes::handle00E0, "Clear screen."},
             {"00EE", 0x00EE, 0xFFFF, &Opcodes::handle00EE, "Return from subroutine."},
+            {"0NNN", 0x0000, 0xF000, &Opcodes::handle0NNN, "Call RCA 1802 program at address NNN."},
             {"1NNN", 0x1000, 0xF000, &Opcodes::handle1NNN, "Jump to address NNN."},
             {"2NNN", 0x2000, 0xF000, &Opcodes::handle2NNN, "Call subroutine at NNN."},
             {"3XNN", 0x3000, 0xF000, &Opcodes::handle3XNN, "Skip the next instruction if VX equals NN."},
