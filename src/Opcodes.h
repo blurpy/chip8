@@ -39,23 +39,23 @@ private:
             {"8XY5", 0x8005, 0xF00F, &Opcodes::handle8XY5, "VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't."},
             {"8XY6", 0x8006, 0xF00F, &Opcodes::handle8XY6, "Store the least significant bit of VX in VF and then shifts VX to the right by 1"},
             {"8XY7", 0x8007, 0xF00F, &Opcodes::handle8XY7, "Set VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't."},
-            {"8XYE", 0x800E, 0xF00F, &Opcodes::handle8XYE, "Stores the most significant bit of VX in VF and then shifts VX to the left by 1."},
-            {"9XY0", 0x9000, 0xF00F, &Opcodes::handle9XY0, "Skips the next instruction if VX doesn't equal VY."},
-            {"ANNN", 0xA000, 0xF000, &Opcodes::handleANNN, "Sets I to the address NNN."},
-            {"BNNN", 0xB000, 0xF000, &Opcodes::handleBNNN, "Jumps to the address NNN plus V0."},
-            {"CXNN", 0xC000, 0xF000, &Opcodes::handleCXNN, "Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN."},
-            {"DXYN", 0xD000, 0xF000, &Opcodes::handleDXYN, "Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels."},
-            {"EX9E", 0xE09E, 0xF0FF, &Opcodes::handleEX9E, "Skips the next instruction if the key stored in VX is pressed."},
-            {"EXA1", 0xE0A1, 0xF0FF, &Opcodes::handleEXA1, "Skips the next instruction if the key stored in VX isn't pressed."},
-            {"FX07", 0xF007, 0xF0FF, &Opcodes::handleFX07, "Sets VX to the value of the delay timer."},
+            {"8XYE", 0x800E, 0xF00F, &Opcodes::handle8XYE, "Store the most significant bit of VX in VF and then shift VX to the left by 1."},
+            {"9XY0", 0x9000, 0xF00F, &Opcodes::handle9XY0, "Skip the next instruction if VX doesn't equal VY."},
+            {"ANNN", 0xA000, 0xF000, &Opcodes::handleANNN, "Set I to the address NNN."},
+            {"BNNN", 0xB000, 0xF000, &Opcodes::handleBNNN, "Jump to the address NNN plus V0."},
+            {"CXNN", 0xC000, 0xF000, &Opcodes::handleCXNN, "Set VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN."},
+            {"DXYN", 0xD000, 0xF000, &Opcodes::handleDXYN, "Draw a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels."},
+            {"EX9E", 0xE09E, 0xF0FF, &Opcodes::handleEX9E, "Skip the next instruction if the key stored in VX is pressed."},
+            {"EXA1", 0xE0A1, 0xF0FF, &Opcodes::handleEXA1, "Skip the next instruction if the key stored in VX isn't pressed."},
+            {"FX07", 0xF007, 0xF0FF, &Opcodes::handleFX07, "Set VX to the value of the delay timer."},
             {"FX0A", 0xF00A, 0xF0FF, &Opcodes::handleFX0A, "A key press is awaited, and then stored in VX."},
-            {"FX15", 0xF015, 0xF0FF, &Opcodes::handleFX15, "Sets the delay timer to VX."},
-            {"FX18", 0xF018, 0xF0FF, &Opcodes::handleFX18, "Sets the sound timer to VX."},
-            {"FX1E", 0xF01E, 0xF0FF, &Opcodes::handleFX1E, "Adds VX to I. VF is set to 1 when there is a range overflow, and to 0 when there isn't."},
-            {"FX29", 0xF029, 0xF0FF, &Opcodes::handleFX29, "Sets I to the location of the sprite for the character in VX."},
-            {"FX33", 0xF033, 0xF0FF, &Opcodes::handleFX33, "Stores the binary-coded decimal representation of VX."},
-            {"FX55", 0xF055, 0xF0FF, &Opcodes::handleFX55, "Stores V0 to VX (including VX) in memory starting at address I."},
-            {"FX65", 0xF065, 0xF0FF, &Opcodes::handleFX65, "Fills V0 to VX (including VX) with values from memory starting at address I."},
+            {"FX15", 0xF015, 0xF0FF, &Opcodes::handleFX15, "Set the delay timer to VX."},
+            {"FX18", 0xF018, 0xF0FF, &Opcodes::handleFX18, "Set the sound timer to VX."},
+            {"FX1E", 0xF01E, 0xF0FF, &Opcodes::handleFX1E, "Add VX to I. VF is set to 1 when there is a range overflow, and to 0 when there isn't."},
+            {"FX29", 0xF029, 0xF0FF, &Opcodes::handleFX29, "Set I to the location of the sprite for the character in VX."},
+            {"FX33", 0xF033, 0xF0FF, &Opcodes::handleFX33, "Store the binary-coded decimal representation of VX."},
+            {"FX55", 0xF055, 0xF0FF, &Opcodes::handleFX55, "Store V0 to VX (including VX) in memory starting at address I."},
+            {"FX65", 0xF065, 0xF0FF, &Opcodes::handleFX65, "Fill V0 to VX (including VX) with values from memory starting at address I."},
     };
 
     OpcodeEntry invalid {"----", 0xFFFF, 0xFFFF, &Opcodes::handleInvalid, "Invalid opcode"};
@@ -100,6 +100,7 @@ private:
 
     uint16_t getVX(uint16_t opcode);
     uint16_t getVY(uint16_t opcode);
+    uint16_t getN(uint16_t opcode);
     uint16_t getNN(uint16_t opcode);
     uint16_t getNNN(uint16_t opcode);
 };

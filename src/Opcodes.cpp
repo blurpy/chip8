@@ -42,11 +42,19 @@ void Opcodes::handle2NNN(uint16_t opcode) {
 }
 
 void Opcodes::handle3XNN(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t nn = getNN(opcode);
+
     // Skip the next instruction if VX equals NN
+    printf("%04X - %s - Skip the next instruction if V%01X equals %02X\n", opcode, "3XNN", vx, nn);
 }
 
 void Opcodes::handle4XNN(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+    uint16_t nn = getNN(opcode);
+
     // Skip the next instruction if VX doesn't equal NN
+    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal %02X\n", opcode, "4XNN", vx, nn);
 }
 
 void Opcodes::handle5XY0(uint16_t opcode) {
@@ -139,82 +147,124 @@ void Opcodes::handle8XY7(uint16_t opcode) {
 void Opcodes::handle8XYE(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
-    // Stores the most significant bit of VX in VF and then shifts VX to the left by 1
-    printf("%04X - %s - Store the most significant bit of V%01X in VF and then shifts V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
+    // Store the most significant bit of VX in VF and then shift VX to the left by 1
+    printf("%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
 }
 
 void Opcodes::handle9XY0(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
     uint16_t vy = getVY(opcode);
 
-    // Skips the next instruction if VX doesn't equal VY
-    printf("%04X - %s - Skips the next instruction if V%01X doesn't equal V%01X\n", opcode, "8XY7", vx, vy);
+    // Skip the next instruction if VX doesn't equal VY
+    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal V%01X\n", opcode, "9XY0", vx, vy);
 }
 
 void Opcodes::handleANNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
-    // Sets I to the address NNN
-    printf("%04X - %s - Sets I to the address %03X\n", opcode, "ANNN", nnn);
+    // Set I to the address NNN
+    printf("%04X - %s - Set I to the address %03X\n", opcode, "ANNN", nnn);
 }
 
 void Opcodes::handleBNNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
-    // Jumps to the address NNN plus V0
-    printf("%04X - %s - Jumps to the address %03X plus V0\n", opcode, "BNNN", nnn);
+    // Jump to the address NNN plus V0
+    printf("%04X - %s - Jump to the address %03X plus V0\n", opcode, "BNNN", nnn);
 }
 
 void Opcodes::handleCXNN(uint16_t opcode) {
-    // Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
+    uint16_t vx = getVX(opcode);
+    uint16_t nn = getNN(opcode);
+
+    // Set VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
+    printf("%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and %02X\n", opcode, "CXNN", vx, nn);
 }
 
 void Opcodes::handleDXYN(uint16_t opcode) {
-     // Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
+    uint16_t vx = getVX(opcode);
+    uint16_t vy = getVY(opcode);
+    uint16_t n = getN(opcode);
+
+     // Draw a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
+    printf("%04X - %s - Draw a sprite at coordinate (V%01X, V%01X) that has a width of 8 pixels and a height of %01X pixels\n", opcode, "DXYN", vx, vy, n);
 }
 
 void Opcodes::handleEX9E(uint16_t opcode) {
-    // Skips the next instruction if the key stored in VX is pressed
+    uint16_t vx = getVX(opcode);
+
+    // Skip the next instruction if the key stored in VX is pressed
+    printf("%04X - %s - Skip the next instruction if the key stored in V%01X is pressed\n", opcode, "EX9E", vx);
 }
 
 void Opcodes::handleEXA1(uint16_t opcode) {
-    // Skips the next instruction if the key stored in VX isn't pressed
+    uint16_t vx = getVX(opcode);
+
+    // Skip the next instruction if the key stored in VX isn't pressed
+    printf("%04X - %s - Skip the next instruction if the key stored in V%01X isn't pressed\n", opcode, "EXA1", vx);
 }
 
 void Opcodes::handleFX07(uint16_t opcode) {
-    // Sets VX to the value of the delay timer
+    uint16_t vx = getVX(opcode);
+
+    // Set VX to the value of the delay timer
+    printf("%04X - %s - Set V%01X to the value of the delay timer\n", opcode, "FX07", vx);
 }
 
 void Opcodes::handleFX0A(uint16_t opcode) {
+    uint16_t vx = getVX(opcode);
+
     // A key press is awaited, and then stored in VX
+    printf("%04X - %s - A key press is awaited, and then stored in V%01X\n", opcode, "FX0A", vx);
 }
 
 void Opcodes::handleFX15(uint16_t opcode) {
-    // Sets the delay timer to VX
+    uint16_t vx = getVX(opcode);
+
+    // Set the delay timer to VX
+    printf("%04X - %s - Set the delay timer to V%01X\n", opcode, "FX15", vx);
 }
 
 void Opcodes::handleFX18(uint16_t opcode) {
-    // Sets the sound timer to VX
+    uint16_t vx = getVX(opcode);
+
+    // Set the sound timer to VX
+    printf("%04X - %s - Set the sound timer to V%01X\n", opcode, "FX18", vx);
 }
 
 void Opcodes::handleFX1E(uint16_t opcode) {
-    // Adds VX to I. VF is set to 1 when there is a range overflow, and to 0 when there isn't
+    uint16_t vx = getVX(opcode);
+
+    // Add VX to I. VF is set to 1 when there is a range overflow, and to 0 when there isn't
+    printf("%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
 }
 
 void Opcodes::handleFX29(uint16_t opcode) {
-    // Sets I to the location of the sprite for the character in VX
+    uint16_t vx = getVX(opcode);
+
+    // Set I to the location of the sprite for the character in VX
+    printf("%04X - %s - Set I to the location of the sprite for the character in V%01X\n", opcode, "FX29", vx);
 }
 
 void Opcodes::handleFX33(uint16_t opcode) {
-    // Stores the binary-coded decimal representation of VX
+    uint16_t vx = getVX(opcode);
+
+    // Store the binary-coded decimal representation of VX
+    printf("%04X - %s - Store the binary-coded decimal representation of V%01X\n", opcode, "FX33", vx);
 }
 
 void Opcodes::handleFX55(uint16_t opcode) {
-    // Stores V0 to VX (including VX) in memory starting at address I
+    uint16_t vx = getVX(opcode);
+
+    // Store V0 to VX (including VX) in memory starting at address I
+    printf("%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
 }
 
 void Opcodes::handleFX65(uint16_t opcode) {
-    // Fills V0 to VX (including VX) with values from memory starting at address I
+    uint16_t vx = getVX(opcode);
+
+    // Fill V0 to VX (including VX) with values from memory starting at address I
+    printf("%04X - %s - Fill V0 to V%01X with values from memory starting at address I\n", opcode, "FX65", vx);
 }
 
 void Opcodes::handleInvalid(uint16_t opcode) {
@@ -228,6 +278,10 @@ uint16_t Opcodes::getVX(uint16_t opcode) {
 
 uint16_t Opcodes::getVY(uint16_t opcode) {
     return (opcode & 0x00F0) >> 4;
+}
+
+uint16_t Opcodes::getN(uint16_t opcode) {
+    return opcode & 0x000F;
 }
 
 uint16_t Opcodes::getNN(uint16_t opcode) {
