@@ -1,6 +1,7 @@
 #include "Chip8.h"
 
 #include <iostream>
+#include <random>
 
 #include "Opcodes.h"
 
@@ -27,7 +28,7 @@ void Opcodes::handle0NNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Call RCA 1802 program at address NNN
-    printf("%04X - %s - Call RCA 1802 program at address %03X\n", opcode, "0NNN", nnn);
+    printf("%04X - %s - Call RCA 1802 program at address 0x%04X\n", opcode, "0NNN", nnn);
 }
 
 void Opcodes::handle00E0(uint16_t opcode) {
@@ -44,17 +45,17 @@ void Opcodes::handle1NNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Jump to address NNN
-    printf("*%04X - %s - Jump to address %03X\n", opcode, "1NNN", nnn);
+    printf("*%04X - %s - Jump to address 0x%04X\n", opcode, "1NNN", nnn);
 
     chip8->PC = nnn;
-    printf("Jumped to %04X\n", chip8->PC);
+    printf("Jumped to 0x%04X\n", chip8->PC);
 }
 
 void Opcodes::handle2NNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Call subroutine at NNN
-    printf("%04X - %s - Call subroutine at %03X\n", opcode, "2NNN", nnn);
+    printf("%04X - %s - Call subroutine at 0x%04X\n", opcode, "2NNN", nnn);
 }
 
 void Opcodes::handle3XNN(uint16_t opcode) {
@@ -62,11 +63,11 @@ void Opcodes::handle3XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Skip the next instruction if VX equals NN
-    printf("*%04X - %s - Skip the next instruction if V%01X (%02X) equals %02X\n", opcode, "3XNN", vx, chip8->V[vx], nn);
+    printf("*%04X - %s - Skip the next instruction if V%01X (0x%02X) equals 0x%02X\n", opcode, "3XNN", vx, chip8->V[vx], nn);
 
     if (chip8->V[vx] == nn) {
         chip8->PC +=2;
-        printf("Skipping to %04X\n", chip8->PC);
+        printf("Skipping to 0x%04X\n", chip8->PC);
     }
 }
 
@@ -75,7 +76,7 @@ void Opcodes::handle4XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Skip the next instruction if VX doesn't equal NN
-    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal %02X\n", opcode, "4XNN", vx, nn);
+    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal 0x%02X\n", opcode, "4XNN", vx, nn);
 }
 
 void Opcodes::handle5XY0(uint16_t opcode) {
@@ -87,7 +88,7 @@ void Opcodes::handle5XY0(uint16_t opcode) {
 
     if (chip8->V[vx] == vy) {
         chip8->PC +=2;
-        printf("Skipping to %04X\n", chip8->PC);
+        printf("Skipping to 0x%04X\n", chip8->PC);
     }
 }
 
@@ -96,7 +97,7 @@ void Opcodes::handle6XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Set VX to NN
-    printf("*%04X - %s - Set V%01X to %02X\n", opcode, "6XNN", vx, nn);
+    printf("*%04X - %s - Set V%01X to 0x%02X\n", opcode, "6XNN", vx, nn);
 
     chip8->V[vx] = nn;
 }
@@ -106,7 +107,7 @@ void Opcodes::handle7XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Add NN to VX. (Carry flag is not changed)
-    printf("%04X - %s - Add %02X to V%01X\n", opcode, "7XNN", nn, vx);
+    printf("%04X - %s - Add 0x%02X to V%01X\n", opcode, "7XNN", nn, vx);
 }
 
 void Opcodes::handle8XY0(uint16_t opcode) {
@@ -191,7 +192,7 @@ void Opcodes::handleANNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Set I to the address NNN
-    printf("*%04X - %s - Set I to the address %03X\n", opcode, "ANNN", nnn);
+    printf("*%04X - %s - Set I to the address 0x%04X\n", opcode, "ANNN", nnn);
 
     chip8->I = nnn;
 }
@@ -200,7 +201,7 @@ void Opcodes::handleBNNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Jump to the address NNN plus V0
-    printf("%04X - %s - Jump to the address %03X plus V0\n", opcode, "BNNN", nnn);
+    printf("%04X - %s - Jump to the address 0x%04X plus V0\n", opcode, "BNNN", nnn);
 }
 
 void Opcodes::handleCXNN(uint16_t opcode) {
@@ -208,7 +209,12 @@ void Opcodes::handleCXNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Set VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
-    printf("%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and %02X\n", opcode, "CXNN", vx, nn);
+    printf("%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and 0x%02X\n", opcode, "CXNN", vx, nn);
+
+    unsigned int randomNumber = generateRandomNumber(0, 255);
+    chip8->V[vx] = randomNumber & nn;
+
+    printf("Generated random number 0x%02X and set V%01X (0x%02X)\n", randomNumber, vx, chip8->V[vx]);
 }
 
 void Opcodes::handleDXYN(uint16_t opcode) {
@@ -238,7 +244,7 @@ void Opcodes::handleFX07(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set VX to the value of the delay timer
-    printf("*%04X - %s - Set V%01X to the value of the delay timer (%02X)\n", opcode, "FX07", vx, chip8->delayTimer);
+    printf("*%04X - %s - Set V%01X to the value of the delay timer (0x%02X)\n", opcode, "FX07", vx, chip8->delayTimer);
 
     chip8->V[vx] = chip8->delayTimer;
 }
@@ -254,7 +260,7 @@ void Opcodes::handleFX15(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set the delay timer to VX
-    printf("*%04X - %s - Set the delay timer to V%01X (%02X)\n", opcode, "FX15", vx, chip8->V[vx]);
+    printf("*%04X - %s - Set the delay timer to V%01X (0x%02X)\n", opcode, "FX15", vx, chip8->V[vx]);
 
     chip8->delayTimer = chip8->V[vx];
 }
@@ -263,7 +269,7 @@ void Opcodes::handleFX18(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set the sound timer to VX
-    printf("*%04X - %s - Set the sound timer to V%01X (%02X)\n", opcode, "FX18", vx, chip8->V[vx]);
+    printf("*%04X - %s - Set the sound timer to V%01X (0x%02X)\n", opcode, "FX18", vx, chip8->V[vx]);
 
     chip8->soundTimer = chip8->V[vx];
 }
@@ -326,4 +332,11 @@ uint16_t Opcodes::getNN(uint16_t opcode) {
 
 uint16_t Opcodes::getNNN(uint16_t opcode) {
     return opcode & 0x0FFF;
+}
+
+unsigned int Opcodes::generateRandomNumber(unsigned char from, unsigned char to)  {
+    std::minstd_rand engine{std::random_device{}()};
+    std::uniform_int_distribution<uint8_t> distribution{from, to};
+
+    return distribution(engine);
 }
