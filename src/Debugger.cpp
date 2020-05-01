@@ -7,8 +7,10 @@
 
 void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos) {
     int padding = LINE_LENGTH * 2;
+    int paddedStartPos = std::max(0, startPos - padding);
+    int paddedEndPos = std::min(endPos + padding, (int) vector.size());
 
-    for (int i = std::max(0, startPos - padding); i < std::min((int) endPos + padding, (int) vector.size()); i++) {
+    for (int i = paddedStartPos; i < paddedEndPos; i++) {
         if (i % LINE_LENGTH == 0) {
             std::cout << std::endl;
             printf("%04X ", i);
