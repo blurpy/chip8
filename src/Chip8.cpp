@@ -29,15 +29,23 @@ void Chip8::run(const std::string &fileName) {
     debugger->hexPrint(memory, ROM_OFFSET, ROM_OFFSET + rom.size());
 //    debugger->printOpcodes(opcodes, rom);
 
-    while (PC < MEMORY_SIZE) {
-        tick();
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    }
+    running = true;
+    std::thread mainThread(&Chip8::mainLoop, this);
 
     window->show();
 
     while (!window->isClosed()) {
         window->pollEvents();
+    }
+
+    running = false;
+    mainThread.join();
+}
+
+void Chip8::mainLoop() {
+    while (running) {
+        tick();
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 

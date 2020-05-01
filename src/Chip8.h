@@ -27,10 +27,14 @@ private:
     uint16_t I = 0;  // 16 bit I-register
     uint16_t PC = ROM_OFFSET; // 16-bit Program counter
 
+    bool running = false;
+
     void tick();
     uint16_t fetch();
 
     friend class Opcodes;
+
+    void mainLoop();
 };
 
 #endif //CHIP8_CHIP8_H
