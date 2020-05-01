@@ -5,6 +5,14 @@
 
 #include "Debugger.h"
 
+Debugger::Debugger() {
+    std::cout << "Debugger in" << std::endl;
+}
+
+Debugger::~Debugger() {
+    std::cout << "Debugger out" << std::endl;
+}
+
 void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos) {
     int padding = LINE_LENGTH * 2;
     int paddedStartPos = std::max(0, startPos - padding);

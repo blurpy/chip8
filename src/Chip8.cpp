@@ -1,3 +1,4 @@
+#include <iostream>
 #include <memory>
 #include <thread>
 #include <vector>
@@ -10,6 +11,11 @@
 
 Chip8::Chip8() {
     opcodes = std::make_shared<Opcodes>(std::make_shared<Chip8>(*this));
+    std::cout << "Chip8 in" << std::endl;
+}
+
+Chip8::~Chip8() {
+    std::cout << "Chip8 out" << std::endl;
 }
 
 void Chip8::run(const std::string &fileName) {

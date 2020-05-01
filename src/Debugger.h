@@ -11,6 +11,9 @@ class Debugger {
 public:
     static const int LINE_LENGTH = 16;
 
+    Debugger();
+    ~Debugger();
+
     void hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos);
     void printOpcodes(const std::shared_ptr<Opcodes> &opcodes, const std::vector<uint8_t> &vector);
 };

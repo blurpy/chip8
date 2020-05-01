@@ -5,6 +5,11 @@
 
 RomLoader::RomLoader(const std::string& fileName) {
     this->fileName = fileName;
+    std::cout << "RomLoader in" << std::endl;
+}
+
+RomLoader::~RomLoader() {
+    std::cout << "RomLoader out" << std::endl;
 }
 
 std::vector<uint8_t> RomLoader::load() {

@@ -9,17 +9,21 @@ Window::Window(const std::string& windowTitle, int width, int height) {
 
     this->closed = true;
     this->window = nullptr;
+
+    std::cout << "Window in" << std::endl;
+}
+
+Window::~Window() {
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    std::cout << "Window out" << std::endl;
 }
 
 void Window::show() {
     if (init()) {
         closed = false;
     }
-}
-
-Window::~Window() {
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 }
 
 bool Window::init() {

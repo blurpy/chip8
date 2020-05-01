@@ -19,7 +19,9 @@ public:
         std::string description;
     };
 
-    Opcodes(std::shared_ptr<Chip8> chip8);
+    explicit Opcodes(std::shared_ptr<Chip8> chip8);
+    ~Opcodes();
+
     OpcodeEntry findOpcode(uint16_t opcode);
 
 private:

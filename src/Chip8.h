@@ -14,6 +14,8 @@ public:
     static const int MEMORY_SIZE = 4096;
 
     Chip8();
+    ~Chip8();
+
     void run(const std::string &fileName);
 
 private:

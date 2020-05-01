@@ -8,6 +8,8 @@ class RomLoader {
 
 public:
     explicit RomLoader(const std::string& fileName);
+    ~RomLoader();
+
     std::vector<uint8_t> load();
 
 private:

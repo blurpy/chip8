@@ -1,11 +1,16 @@
 #include "Chip8.h"
 
-#include "Opcodes.h"
+#include <iostream>
 
-#include <utility>
+#include "Opcodes.h"
 
 Opcodes::Opcodes(std::shared_ptr<Chip8> chip8) {
     this->chip8 = std::move(chip8);
+    std::cout << "Opcodes in" << std::endl;
+}
+
+Opcodes::~Opcodes() {
+    std::cout << "Opcodes out" << std::endl;
 }
 
 Opcodes::OpcodeEntry Opcodes::findOpcode(uint16_t opcode) {
