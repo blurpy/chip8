@@ -10,7 +10,7 @@
 #include "Chip8.h"
 
 Chip8::Chip8() {
-    opcodes = std::make_shared<Opcodes>(std::make_shared<Chip8>(*this));
+    opcodes = std::make_shared<Opcodes>(this);
     std::cout << "Chip8 in" << std::endl;
 }
 

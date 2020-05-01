@@ -19,13 +19,13 @@ public:
         std::string description;
     };
 
-    explicit Opcodes(std::shared_ptr<Chip8> chip8);
+    explicit Opcodes(Chip8 *chip8);
     ~Opcodes();
 
     OpcodeEntry findOpcode(uint16_t opcode);
 
 private:
-    std::shared_ptr<Chip8> chip8;
+    Chip8 *chip8;
 
     std::vector<OpcodeEntry> opcodeEntries = {
             // Note: Order of 0xxx opcodes are important to avoid all of them being recognized as 0NNN

@@ -4,8 +4,8 @@
 
 #include "Opcodes.h"
 
-Opcodes::Opcodes(std::shared_ptr<Chip8> chip8) {
-    this->chip8 = std::move(chip8);
+Opcodes::Opcodes(Chip8 *chip8) {
+    this->chip8 = chip8;
     std::cout << "Opcodes in" << std::endl;
 }
 
