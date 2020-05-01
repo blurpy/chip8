@@ -62,7 +62,7 @@ void Opcodes::handle3XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Skip the next instruction if VX equals NN
-    printf("*%04X - %s - Skip the next instruction if V%01X equals %02X\n", opcode, "3XNN", vx, nn);
+    printf("*%04X - %s - Skip the next instruction if V%01X (%02X) equals %02X\n", opcode, "3XNN", vx, chip8->V[vx], nn);
 
     if (chip8->V[vx] == nn) {
         chip8->PC +=2;
@@ -238,7 +238,9 @@ void Opcodes::handleFX07(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set VX to the value of the delay timer
-    printf("%04X - %s - Set V%01X to the value of the delay timer\n", opcode, "FX07", vx);
+    printf("*%04X - %s - Set V%01X to the value of the delay timer (%02X)\n", opcode, "FX07", vx, chip8->delayTimer);
+
+    chip8->V[vx] = chip8->delayTimer;
 }
 
 void Opcodes::handleFX0A(uint16_t opcode) {
@@ -252,14 +254,18 @@ void Opcodes::handleFX15(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set the delay timer to VX
-    printf("%04X - %s - Set the delay timer to V%01X\n", opcode, "FX15", vx);
+    printf("*%04X - %s - Set the delay timer to V%01X (%02X)\n", opcode, "FX15", vx, chip8->V[vx]);
+
+    chip8->delayTimer = chip8->V[vx];
 }
 
 void Opcodes::handleFX18(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set the sound timer to VX
-    printf("%04X - %s - Set the sound timer to V%01X\n", opcode, "FX18", vx);
+    printf("*%04X - %s - Set the sound timer to V%01X (%02X)\n", opcode, "FX18", vx, chip8->V[vx]);
+
+    chip8->soundTimer = chip8->V[vx];
 }
 
 void Opcodes::handleFX1E(uint16_t opcode) {

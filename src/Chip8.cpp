@@ -44,6 +44,10 @@ void Chip8::run(const std::string &fileName) {
 
 void Chip8::mainLoop() {
     while (running) {
+        // TODO mocked
+        delayTimer = std::max(0, delayTimer - 10);
+        soundTimer = std::max(0, soundTimer - 10);
+
         tick();
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }

@@ -27,6 +27,9 @@ private:
     uint16_t I = 0;  // 16 bit I-register
     uint16_t PC = ROM_OFFSET; // 16-bit Program counter
 
+    uint8_t delayTimer = 0;
+    uint8_t soundTimer = 0;
+
     bool running = false;
 
     void tick();
