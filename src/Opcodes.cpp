@@ -76,7 +76,12 @@ void Opcodes::handle4XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Skip the next instruction if VX doesn't equal NN
-    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal 0x%02X\n", opcode, "4XNN", vx, nn);
+    printf("*%04X - %s - Skip the next instruction if V%01X (0x%02X) doesn't equal 0x%02X\n", opcode, "4XNN", vx, chip8->V[vx], nn);
+
+    if (chip8->V[vx] != nn) {
+        chip8->PC +=2;
+        printf("Skipping to 0x%04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handle5XY0(uint16_t opcode) {
@@ -107,7 +112,9 @@ void Opcodes::handle7XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Add NN to VX. (Carry flag is not changed)
-    printf("%04X - %s - Add 0x%02X to V%01X\n", opcode, "7XNN", nn, vx);
+    printf("*%04X - %s - Add 0x%02X to V%01X\n", opcode, "7XNN", nn, vx);
+
+    chip8->V[vx] += nn;
 }
 
 void Opcodes::handle8XY0(uint16_t opcode) {
@@ -115,7 +122,9 @@ void Opcodes::handle8XY0(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Set VX to the value of VY
-    printf("%04X - %s - Set V%01X to the value of V%01X\n", opcode, "8XY0", vx, vy);
+    printf("*%04X - %s - Set V%01X to the value of V%01X\n", opcode, "8XY0", vx, vy);
+
+    chip8->V[vx] = chip8->V[vy];
 }
 
 void Opcodes::handle8XY1(uint16_t opcode) {
@@ -123,7 +132,9 @@ void Opcodes::handle8XY1(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Set VX to VX or VY. (Bitwise OR operation)
-    printf("%04X - %s - Set V%01X to V%01X or V%01X\n", opcode, "8XY1", vx, vx, vy);
+    printf("*%04X - %s - Set V%01X to V%01X or V%01X\n", opcode, "8XY1", vx, vx, vy);
+
+    chip8->V[vx] = chip8->V[vx] | chip8->V[vy];
 }
 
 void Opcodes::handle8XY2(uint16_t opcode) {
@@ -131,7 +142,9 @@ void Opcodes::handle8XY2(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Set VX to VX and VY. (Bitwise AND operation)
-    printf("%04X - %s - Set V%01X to V%01X and V%01X\n", opcode, "8XY2", vx, vx, vy);
+    printf("*%04X - %s - Set V%01X to V%01X and V%01X\n", opcode, "8XY2", vx, vx, vy);
+
+    chip8->V[vx] = chip8->V[vx] & chip8->V[vy];
 }
 
 void Opcodes::handle8XY3(uint16_t opcode) {
@@ -139,7 +152,9 @@ void Opcodes::handle8XY3(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Set VX to VX xor VY. (Bitwise XOR operation)
-    printf("%04X - %s - Set V%01X to V%01X xor V%01X\n", opcode, "8XY3", vx, vx, vy);
+    printf("*%04X - %s - Set V%01X to V%01X xor V%01X\n", opcode, "8XY3", vx, vx, vy);
+
+    chip8->V[vx] = chip8->V[vx] ^ chip8->V[vy];
 }
 
 void Opcodes::handle8XY4(uint16_t opcode) {
@@ -147,7 +162,12 @@ void Opcodes::handle8XY4(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Add VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
-    printf("%04X - %s - Add V%01X to V%01X\n", opcode, "8XY4", vy, vx);
+    printf("*%04X - %s - Add V%01X to V%01X\n", opcode, "8XY4", vy, vx);
+
+    uint16_t result = chip8->V[vx] + chip8->V[vy];
+
+    chip8->V[vx] = result;
+    chip8->V[0xF] = result > 255;
 }
 
 void Opcodes::handle8XY5(uint16_t opcode) {
@@ -209,7 +229,7 @@ void Opcodes::handleCXNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Set VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
-    printf("%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and 0x%02X\n", opcode, "CXNN", vx, nn);
+    printf("*%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and 0x%02X\n", opcode, "CXNN", vx, nn);
 
     unsigned int randomNumber = generateRandomNumber(0, 255);
     chip8->V[vx] = randomNumber & nn;
