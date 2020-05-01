@@ -1,4 +1,12 @@
+#include "Chip8.h"
+
 #include "Opcodes.h"
+
+#include <utility>
+
+Opcodes::Opcodes(std::shared_ptr<Chip8> chip8) {
+    this->chip8 = std::move(chip8);
+}
 
 Opcodes::OpcodeEntry Opcodes::findOpcode(uint16_t opcode) {
     for (auto &entry : opcodeEntries) {
@@ -31,7 +39,10 @@ void Opcodes::handle1NNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Jump to address NNN
-    printf("%04X - %s - Jump to address %03X\n", opcode, "1NNN", nnn);
+    printf("*%04X - %s - Jump to address %03X\n", opcode, "1NNN", nnn);
+
+    chip8->PC = nnn;
+    printf("Jumped to %04X\n", chip8->PC);
 }
 
 void Opcodes::handle2NNN(uint16_t opcode) {
@@ -46,7 +57,12 @@ void Opcodes::handle3XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Skip the next instruction if VX equals NN
-    printf("%04X - %s - Skip the next instruction if V%01X equals %02X\n", opcode, "3XNN", vx, nn);
+    printf("*%04X - %s - Skip the next instruction if V%01X equals %02X\n", opcode, "3XNN", vx, nn);
+
+    if (chip8->V[vx] == nn) {
+        chip8->PC +=2;
+        printf("Skipping to %04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handle4XNN(uint16_t opcode) {
@@ -62,7 +78,12 @@ void Opcodes::handle5XY0(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Skip the next instruction if VX equals VY
-    printf("%04X - %s - Skip the next instruction if V%01X equals V%01X\n", opcode, "5XY0", vx, vy);
+    printf("*%04X - %s - Skip the next instruction if V%01X equals V%01X\n", opcode, "5XY0", vx, vy);
+
+    if (chip8->V[vx] == vy) {
+        chip8->PC +=2;
+        printf("Skipping to %04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handle6XNN(uint16_t opcode) {
@@ -70,7 +91,9 @@ void Opcodes::handle6XNN(uint16_t opcode) {
     uint16_t nn = getNN(opcode);
 
     // Set VX to NN
-    printf("%04X - %s - Set V%01X to %02X\n", opcode, "6XNN", vx, nn);
+    printf("*%04X - %s - Set V%01X to %02X\n", opcode, "6XNN", vx, nn);
+
+    chip8->V[vx] = nn;
 }
 
 void Opcodes::handle7XNN(uint16_t opcode) {
@@ -163,7 +186,9 @@ void Opcodes::handleANNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Set I to the address NNN
-    printf("%04X - %s - Set I to the address %03X\n", opcode, "ANNN", nnn);
+    printf("*%04X - %s - Set I to the address %03X\n", opcode, "ANNN", nnn);
+
+    chip8->I = nnn;
 }
 
 void Opcodes::handleBNNN(uint16_t opcode) {

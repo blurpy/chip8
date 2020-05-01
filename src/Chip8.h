@@ -27,6 +27,8 @@ private:
 
     void tick();
     uint16_t fetch();
+
+    friend class Opcodes;
 };
 
 #endif //CHIP8_CHIP8_H

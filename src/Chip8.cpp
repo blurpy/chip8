@@ -9,7 +9,7 @@
 #include "Chip8.h"
 
 Chip8::Chip8() {
-    opcodes = std::make_shared<Opcodes>();
+    opcodes = std::make_shared<Opcodes>(std::make_shared<Chip8>(*this));
 }
 
 void Chip8::run(const std::string &fileName) {
@@ -21,7 +21,7 @@ void Chip8::run(const std::string &fileName) {
     memory.insert(memory.begin() + ROM_OFFSET, rom.begin(), rom.end());
 
     debugger->hexPrint(memory, ROM_OFFSET, ROM_OFFSET + rom.size());
-    debugger->printOpcodes(opcodes, rom);
+//    debugger->printOpcodes(opcodes, rom);
 
     while (PC < MEMORY_SIZE) {
         tick();

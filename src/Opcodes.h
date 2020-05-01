@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+class Chip8;
+
 class Opcodes {
 
 public:
@@ -17,9 +19,12 @@ public:
         std::string description;
     };
 
+    Opcodes(std::shared_ptr<Chip8> chip8);
     OpcodeEntry findOpcode(uint16_t opcode);
 
 private:
+    std::shared_ptr<Chip8> chip8;
+
     std::vector<OpcodeEntry> opcodeEntries = {
             // Note: Order of 0xxx opcodes are important to avoid all of them being recognized as 0NNN
             {"00E0", 0x00E0, 0xFFFF, &Opcodes::handle00E0, "Clear screen."},
