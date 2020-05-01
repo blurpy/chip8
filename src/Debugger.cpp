@@ -26,7 +26,7 @@ void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int en
     std::cout << std::endl << std::endl;
 }
 
-void Debugger::printOpcodes(const std::unique_ptr<Opcodes> &opcodes, const std::vector<uint8_t> &vector) {
+void Debugger::printOpcodes(const std::shared_ptr<Opcodes> &opcodes, const std::vector<uint8_t> &vector) {
     for (int i = 0; i < vector.size(); i +=2) {
         uint16_t opcode = (vector[i] << 8) | vector[i + 1];
         Opcodes::OpcodeEntry opcodeEntry = opcodes->findOpcode(opcode);
