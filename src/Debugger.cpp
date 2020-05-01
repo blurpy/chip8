@@ -5,9 +5,11 @@
 
 #include "Debugger.h"
 
-void Debugger::hexPrint(const std::vector<uint8_t> &vector) {
-    for (int i = 0; i < vector.size(); i++) {
-        if (i % 16 == 0) {
+void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos) {
+    int padding = LINE_LENGTH * 2;
+
+    for (int i = std::max(0, startPos - padding); i < std::min((int) endPos + padding, (int) vector.size()); i++) {
+        if (i % LINE_LENGTH == 0) {
             std::cout << std::endl;
             printf("%04X ", i);
         }

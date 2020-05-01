@@ -9,7 +9,9 @@
 class Debugger {
 
 public:
-    void hexPrint(const std::vector<uint8_t> &vector);
+    static const int LINE_LENGTH = 16;
+
+    void hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos);
     void printOpcodes(const std::unique_ptr<Opcodes> &opcodes, const std::vector<uint8_t> &vector);
 };
 

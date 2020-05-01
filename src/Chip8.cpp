@@ -7,7 +7,7 @@
 
 #include "Chip8.h"
 
-static const int ROM_OFFSET = 512;
+static const int ROM_OFFSET = 0x200;
 
 void Chip8::run(const std::string &fileName) {
     const auto window = std::make_unique<Window>("CHIP-8", 640, 480);
@@ -18,7 +18,7 @@ void Chip8::run(const std::string &fileName) {
     const std::vector<uint8_t> &rom = romLoader->load();
     memory.insert(memory.begin() + ROM_OFFSET, rom.begin(), rom.end());
 
-    debugger->hexPrint(rom);
+    debugger->hexPrint(memory, ROM_OFFSET, ROM_OFFSET + rom.size());
     debugger->printOpcodes(opcodes, rom);
 
     window->show();
