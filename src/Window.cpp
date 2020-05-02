@@ -9,6 +9,8 @@ Window::Window(const std::string& windowTitle, int scale) {
     this->height = ORIGINAL_HEIGHT * scale;
 
     this->closed = true;
+    this->dirty = false;
+
     this->pixelSize = sizeof(uint32_t); // Should match SDL_PIXELFORMAT_ARGB8888
     this->pixels = std::vector<uint8_t>(width * height * pixelSize);
 
@@ -91,6 +93,8 @@ bool Window::drawSpritePixel(unsigned int x, unsigned int y) {
     pixels[offset + 2] = newColor; // r
     pixels[offset + 3] = SDL_ALPHA_OPAQUE; // a
 
+    dirty = true;
+
     return originalColor == WHITE && originalColor != newColor;
 }
 
@@ -98,6 +102,10 @@ bool Window::drawSpritePixel(unsigned int x, unsigned int y) {
  * Transfers current pixels to the screen, according to specified scale.
  */
 void Window::redraw() {
+    if (!dirty) {
+        return;
+    }
+
     SDL_Rect textureSize = {0, 0, ORIGINAL_WIDTH, ORIGINAL_HEIGHT};
     SDL_Rect windowSize = {0, 0, width, height};
 
@@ -105,6 +113,8 @@ void Window::redraw() {
     SDL_UpdateTexture(texture, nullptr, &pixels[0], width * pixelSize);
     SDL_RenderCopy(renderer, texture, &textureSize, &windowSize);
     SDL_RenderPresent(renderer);
+
+    dirty = false;
 }
 
 /**
@@ -114,6 +124,8 @@ void Window::clearScreen() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
+
+    dirty = false;
 }
 
 void Window::pollEvents() {

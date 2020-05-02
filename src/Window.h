@@ -31,6 +31,7 @@ private:
     int scale;
 
     bool closed;
+    bool dirty;
 
     int pixelSize;
     std::vector<uint8_t> pixels;
