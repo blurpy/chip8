@@ -49,7 +49,7 @@ void Chip8::mainLoop() {
         soundTimer = std::max(0, soundTimer - 10);
 
         tick();
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        sleep(200);
     }
 }
 
@@ -58,14 +58,25 @@ void Chip8::tick() {
     const Opcodes::OpcodeEntry &opcodeEntry = opcodes->findOpcode(opcode);
 
     printf("%04X - ", PC);
-    PC += 2;
 
-    // Execute instruction
-    (opcodes.get()->*opcodeEntry.handler)(opcode);
+    increaseProgramCounter();
+    executeInstruction(opcode, opcodeEntry);
 }
 
 uint16_t Chip8::fetch() {
     return (memory.at(PC) << 8) | memory.at(PC + 1);;
+}
+
+void Chip8::increaseProgramCounter() {
+    PC += 2;
+}
+
+void Chip8::executeInstruction(const uint16_t opcode, const Opcodes::OpcodeEntry &opcodeEntry) const {
+    (opcodes.get()->*opcodeEntry.handler)(opcode);
+}
+
+void Chip8::sleep(int milliseconds) const {
+    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
 void Chip8::clearScreen() {

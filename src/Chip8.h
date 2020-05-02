@@ -21,6 +21,8 @@ public:
     void run(const std::string &fileName);
 
 private:
+    friend class Opcodes;
+
     std::shared_ptr<Opcodes> opcodes;
     std::unique_ptr<Window> window;
 
@@ -35,12 +37,12 @@ private:
 
     bool running = false;
 
+    void mainLoop();
     void tick();
     uint16_t fetch();
-
-    friend class Opcodes;
-
-    void mainLoop();
+    void increaseProgramCounter();
+    void executeInstruction(uint16_t opcode, const Opcodes::OpcodeEntry &opcodeEntry) const;
+    void sleep(int milliseconds) const;
 
     void clearScreen();
 };
