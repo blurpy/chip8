@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Window.h"
+
 #include "Opcodes.h"
 
 class Chip8 {
@@ -20,6 +22,7 @@ public:
 
 private:
     std::shared_ptr<Opcodes> opcodes;
+    std::unique_ptr<Window> window;
 
     std::vector<uint8_t> memory = std::vector<uint8_t>(MEMORY_SIZE); // 4096 8-bit memory locations
 
@@ -38,6 +41,8 @@ private:
     friend class Opcodes;
 
     void mainLoop();
+
+    void clearScreen();
 };
 
 #endif //CHIP8_CHIP8_H

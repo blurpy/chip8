@@ -5,12 +5,13 @@
 
 #include "Debugger.h"
 #include "RomLoader.h"
-#include "Window.h"
 
 #include "Chip8.h"
 
 Chip8::Chip8() {
     opcodes = std::make_shared<Opcodes>(this);
+    window = std::make_unique<Window>("CHIP-8", 640, 320);
+
     std::cout << "Chip8 in" << std::endl;
 }
 
@@ -19,7 +20,6 @@ Chip8::~Chip8() {
 }
 
 void Chip8::run(const std::string &fileName) {
-    const auto window = std::make_unique<Window>("CHIP-8", 640, 480);
     const auto romLoader = std::make_unique<RomLoader>(fileName);
     const auto debugger = std::make_unique<Debugger>();
 
@@ -66,4 +66,8 @@ void Chip8::tick() {
 
 uint16_t Chip8::fetch() {
     return (memory.at(PC) << 8) | memory.at(PC + 1);;
+}
+
+void Chip8::clearScreen() {
+    window->clearScreen();
 }

@@ -9,11 +9,13 @@ Window::Window(const std::string& windowTitle, int width, int height) {
 
     this->closed = true;
     this->window = nullptr;
+    this->renderer = nullptr;
 
     std::cout << "Window in" << std::endl;
 }
 
 Window::~Window() {
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
@@ -44,7 +46,21 @@ bool Window::init() {
         return false;
     }
 
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    if (renderer == nullptr) {
+        std::cerr << "SDL Renderer failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
     return true;
+}
+
+void Window::clearScreen() {
+    // Fills screen with black
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
 }
 
 void Window::pollEvents() {

@@ -33,7 +33,9 @@ void Opcodes::handle0NNN(uint16_t opcode) {
 
 void Opcodes::handle00E0(uint16_t opcode) {
     // Clear screen
-    printf("%04X - %s - Clear screen\n", opcode, "00E0");
+    printf("*%04X - %s - Clear screen\n", opcode, "00E0");
+
+    chip8->clearScreen();
 }
 
 void Opcodes::handle00EE(uint16_t opcode) {

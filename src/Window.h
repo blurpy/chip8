@@ -13,13 +13,16 @@ public:
     bool isClosed() const;
 
     void show();
+    void clearScreen();
 
 private:
     std::string windowTitle;
     int width;
     int height;
-    SDL_Window *window;
     bool closed;
+
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 
     bool init();
 };
