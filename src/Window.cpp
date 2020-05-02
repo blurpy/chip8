@@ -2,10 +2,11 @@
 
 #include "Window.h"
 
-Window::Window(const std::string& windowTitle, int width, int height) {
+Window::Window(const std::string& windowTitle, int scale) {
     this->windowTitle = windowTitle;
-    this->width = width;
-    this->height = height;
+    this->scale = scale;
+    this->width = ORIGINAL_WIDTH * scale;
+    this->height = ORIGINAL_HEIGHT * scale;
 
     this->closed = true;
     this->window = nullptr;

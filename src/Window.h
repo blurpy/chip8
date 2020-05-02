@@ -6,19 +6,25 @@
 class Window {
 
 public:
-    Window(const std::string& windowTitle, int width, int height);
+    Window(const std::string& windowTitle, int scale);
     ~Window();
 
     void pollEvents();
-    bool isClosed() const;
 
+    bool isClosed() const;
     void show();
+
     void clearScreen();
 
 private:
+    static const int ORIGINAL_WIDTH = 64;
+    static const int ORIGINAL_HEIGHT = 32;
+
     std::string windowTitle;
     int width;
     int height;
+    int scale;
+
     bool closed;
 
     SDL_Window *window;

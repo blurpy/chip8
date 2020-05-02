@@ -10,7 +10,7 @@
 
 Chip8::Chip8() {
     opcodes = std::make_shared<Opcodes>(this);
-    window = std::make_unique<Window>("CHIP-8", 640, 320);
+    window = std::make_unique<Window>("CHIP-8", 10);
 
     std::cout << "Chip8 in" << std::endl;
 }
