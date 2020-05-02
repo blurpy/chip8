@@ -49,7 +49,7 @@ void Chip8::mainLoop() {
         soundTimer = std::max(0, soundTimer - 10);
 
         tick();
-        sleep(200);
+        sleep(5);
     }
 }
 
@@ -61,6 +61,7 @@ void Chip8::tick() {
 
     increaseProgramCounter();
     executeInstruction(opcode, opcodeEntry);
+    window->redraw();
 }
 
 uint16_t Chip8::fetch() {
@@ -77,6 +78,10 @@ void Chip8::executeInstruction(const uint16_t opcode, const Opcodes::OpcodeEntry
 
 void Chip8::sleep(int milliseconds) const {
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+}
+
+bool Chip8::drawSpritePixel(unsigned int x, unsigned int y) {
+    return window->drawSpritePixel(x, y);
 }
 
 void Chip8::clearScreen() {

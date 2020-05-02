@@ -9,13 +9,18 @@ Window::Window(const std::string& windowTitle, int scale) {
     this->height = ORIGINAL_HEIGHT * scale;
 
     this->closed = true;
+    this->pixelSize = sizeof(uint32_t); // Should match SDL_PIXELFORMAT_ARGB8888
+    this->pixels = std::vector<uint8_t>(width * height * pixelSize);
+
     this->window = nullptr;
     this->renderer = nullptr;
+    this->texture = nullptr;
 
     std::cout << "Window in" << std::endl;
 }
 
 Window::~Window() {
+    SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -54,11 +59,58 @@ bool Window::init() {
         return false;
     }
 
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
+
+    if (texture == nullptr) {
+        std::cerr << "SDL Texture failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
     return true;
 }
 
+/**
+ * Graphics are drawn to the screen solely by drawing sprites, which are 8 pixels wide and may be
+ * from 1 to 15 pixels in height. Sprite pixels are XOR'd with corresponding screen pixels.
+ * In other words, sprite pixels that are set flip the color of the corresponding screen pixel,
+ * while unset sprite pixels do nothing.
+ *
+ * @param x coordinate of pixel.
+ * @param y coordinate of pixel.
+ * @return If any screen pixels are flipped from set to unset.
+ */
+bool Window::drawSpritePixel(unsigned int x, unsigned int y) {
+    unsigned int offset = (width * pixelSize * y) + (pixelSize * x);
+
+    int originalColor = pixels[offset];
+    int newColor = pixels[offset] ^ WHITE;
+
+    // A bit overkill, but ARGB pixels drawn as either 0 (black) or 255 (white) and no transparency
+    pixels[offset + 0] = newColor; // b
+    pixels[offset + 1] = newColor; // g
+    pixels[offset + 2] = newColor; // r
+    pixels[offset + 3] = SDL_ALPHA_OPAQUE; // a
+
+    return originalColor == WHITE && originalColor != newColor;
+}
+
+/**
+ * Transfers current pixels to the screen, according to specified scale.
+ */
+void Window::redraw() {
+    SDL_Rect textureSize = {0, 0, ORIGINAL_WIDTH, ORIGINAL_HEIGHT};
+    SDL_Rect windowSize = {0, 0, width, height};
+
+    SDL_RenderClear(renderer);
+    SDL_UpdateTexture(texture, nullptr, &pixels[0], width * pixelSize);
+    SDL_RenderCopy(renderer, texture, &textureSize, &windowSize);
+    SDL_RenderPresent(renderer);
+}
+
+/**
+ * Fills screen with black.
+ */
 void Window::clearScreen() {
-    // Fills screen with black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);

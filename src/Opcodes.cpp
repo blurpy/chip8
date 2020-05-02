@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <random>
+#include <bitset>
 
 #include "Opcodes.h"
 
@@ -239,13 +240,51 @@ void Opcodes::handleCXNN(uint16_t opcode) {
     printf("Generated random number 0x%02X and set V%01X (0x%02X)\n", randomNumber, vx, chip8->V[vx]);
 }
 
+/**
+ * Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels.
+ * Each row of 8 pixels is read as bit-coded starting from memory location I;
+ * I value doesn't change after the execution of this instruction.
+ * As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn,
+ * and to 0 if that doesn't happen.
+ *
+ * 8 bit-coded pixels means that a 1 at a location in the byte represents a visible pixel at that column and 0 does not.
+ * Like this:
+ *
+ * 00111100 = '  ****  '
+ * 11000011 = '**    **'
+ */
 void Opcodes::handleDXYN(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
     uint16_t vy = getVY(opcode);
     uint16_t n = getN(opcode);
 
      // Draw a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
-    printf("%04X - %s - Draw a sprite at coordinate (V%01X, V%01X) that has a width of 8 pixels and a height of %01X pixels\n", opcode, "DXYN", vx, vy, n);
+    printf("*%04X - %s - Draw a sprite at coordinate (V%01X, V%01X) that has a width of 8 pixels and a height of %01X pixels\n", opcode, "DXYN", vx, vy, n);
+
+    bool unsetPixels = false;
+    int initialXPosition = chip8->V[vx];
+    int initialYPosition = chip8->V[vy];
+
+    for (int yIndex = 0; yIndex < n; yIndex++) { // Height/Rows
+        uint8_t &pixelsAtRow = chip8->memory[chip8->I + yIndex]; // The 8 bit-coded pixels for this row
+
+        for (int xIndex = 0; xIndex < 8; xIndex++) { // Width/Columns
+            int xPosition = initialXPosition + xIndex;
+            int yPosition = initialYPosition + yIndex;
+
+            // Only draw a pixel if it's a 1 at the current column in the bit-coded pixels
+            if ((pixelsAtRow & (0x80 >> xIndex)) != 0) {
+                if (chip8->drawSpritePixel(xPosition, yPosition)) {
+                    unsetPixels = true;
+                }
+
+                std::cout << "Draw at: [" << xPosition << "," << yPosition << "] - Bits: "
+                          << std::bitset<sizeof(uint8_t *)>(pixelsAtRow) << " - Unset: " << unsetPixels << std::endl;
+            }
+        }
+    }
+
+    chip8->V[0xF] = unsetPixels;
 }
 
 void Opcodes::handleEX9E(uint16_t opcode) {

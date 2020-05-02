@@ -44,6 +44,7 @@ private:
     void executeInstruction(uint16_t opcode, const Opcodes::OpcodeEntry &opcodeEntry) const;
     void sleep(int milliseconds) const;
 
+    bool drawSpritePixel(unsigned int x, unsigned int y);
     void clearScreen();
 };
 
