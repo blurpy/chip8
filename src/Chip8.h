@@ -2,6 +2,7 @@
 #define CHIP8_CHIP8_H
 
 #include <memory>
+#include <stack>
 #include <string>
 #include <vector>
 
@@ -31,6 +32,7 @@ private:
     uint8_t V[16]{}; // V0 to VF 8-bit registers
     uint16_t I = 0;  // 16 bit I-register
     uint16_t PC = ROM_OFFSET; // 16-bit Program counter
+    std::stack<uint16_t> stack = std::stack<uint16_t>(); // 16-bit stack
 
     uint8_t delayTimer = 0;
     uint8_t soundTimer = 0;

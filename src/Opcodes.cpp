@@ -41,7 +41,11 @@ void Opcodes::handle00E0(uint16_t opcode) {
 
 void Opcodes::handle00EE(uint16_t opcode) {
     // Return from subroutine
-    printf("%04X - %s - Return from subroutine\n", opcode, "00EE");
+    printf("*%04X - %s - Return from subroutine\n", opcode, "00EE");
+
+    chip8->PC = chip8->stack.top();
+    chip8->stack.pop();
+    printf("Returned from subroutine to 0x%04X\n", chip8->PC);
 }
 
 void Opcodes::handle1NNN(uint16_t opcode) {
@@ -58,7 +62,11 @@ void Opcodes::handle2NNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
 
     // Call subroutine at NNN
-    printf("%04X - %s - Call subroutine at 0x%04X\n", opcode, "2NNN", nnn);
+    printf("*%04X - %s - Call subroutine at 0x%04X\n", opcode, "2NNN", nnn);
+
+    chip8->stack.push(chip8->PC);
+    chip8->PC = nnn;
+    printf("Called subroutine at 0x%04X\n", chip8->PC);
 }
 
 void Opcodes::handle3XNN(uint16_t opcode) {
