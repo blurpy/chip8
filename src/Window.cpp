@@ -125,6 +125,10 @@ void Window::clearScreen() {
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
+    for (uint8_t &pixel : pixels) {
+        pixel = 0;
+    }
+
     dirty = false;
 }
 
