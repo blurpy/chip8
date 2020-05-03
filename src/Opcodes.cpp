@@ -186,7 +186,16 @@ void Opcodes::handle8XY5(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't
-    printf("%04X - %s - V%01X is subtracted from V%01X\n", opcode, "8XY5", vy, vx);
+    printf("*%04X - %s - V%01X is subtracted from V%01X\n", opcode, "8XY5", vy, vx);
+
+    uint8_t x = chip8->V[vx];
+    uint8_t y = chip8->V[vy];
+    int result = x - y;
+
+    chip8->V[vx] = result;
+    chip8->V[0xF] = result < 0;
+    
+    printf("Computed %i - %i = %i. Borrow: %i\n", x, y, result, result < 0);
 }
 
 void Opcodes::handle8XY6(uint16_t opcode) {
@@ -216,7 +225,12 @@ void Opcodes::handle9XY0(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Skip the next instruction if VX doesn't equal VY
-    printf("%04X - %s - Skip the next instruction if V%01X doesn't equal V%01X\n", opcode, "9XY0", vx, vy);
+    printf("*%04X - %s - Skip the next instruction if V%01X doesn't equal V%01X\n", opcode, "9XY0", vx, vy);
+
+    if (chip8->V[vx] != chip8->V[vy]) {
+        chip8->PC +=2;
+        printf("Skipping to 0x%04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handleANNN(uint16_t opcode) {
@@ -350,18 +364,46 @@ void Opcodes::handleFX1E(uint16_t opcode) {
     printf("%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
 }
 
+/**
+ * Sets I to the location of the sprite for the character in VX.
+ * Characters 0-F (in hexadecimal) are represented by a 4x5 font.
+ */
 void Opcodes::handleFX29(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Set I to the location of the sprite for the character in VX
-    printf("%04X - %s - Set I to the location of the sprite for the character in V%01X\n", opcode, "FX29", vx);
+    printf("*%04X - %s - Set I to the location of the sprite for the character in V%01X\n", opcode, "FX29", vx);
+
+    uint8_t character = chip8->V[vx];
+    uint16_t location = Chip8::FONT_OFFSET + character * Chip8::FONT_CHARACTER_SIZE;
+    chip8->I = location;
+
+    printf("Returning character %01X at %04X\n", character, location);
 }
 
+/**
+ * Stores the binary-coded decimal representation of VX, with the most significant of three digits
+ * at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2.
+ * (In other words, take the decimal representation of VX, place the hundreds digit in memory at
+ * location in I, the tens digit at location I+1, and the ones digit at location I+2.)
+ */
 void Opcodes::handleFX33(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Store the binary-coded decimal representation of VX
-    printf("%04X - %s - Store the binary-coded decimal representation of V%01X\n", opcode, "FX33", vx);
+    printf("*%04X - %s - Store the binary-coded decimal representation of V%01X\n", opcode, "FX33", vx);
+
+    uint8_t value = chip8->V[vx];
+
+    int hundredsPlace = value / 100;  // [1]23
+    int tensPlace = value % 100 / 10; // 1[2]3
+    int onesPlace = value % 10;       // 12[3]
+
+    chip8->memory[chip8->I + 0] = hundredsPlace;
+    chip8->memory[chip8->I + 1] = tensPlace;
+    chip8->memory[chip8->I + 2] = onesPlace;
+
+    printf("Converted %i to %i %i %i\n", value, hundredsPlace, tensPlace, onesPlace);
 }
 
 void Opcodes::handleFX55(uint16_t opcode) {
@@ -371,11 +413,21 @@ void Opcodes::handleFX55(uint16_t opcode) {
     printf("%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
 }
 
+/**
+ * Fills V0 to VX (including VX) with values from memory starting at address I.
+ * The offset from I is increased by 1 for each value written, but I itself is left unmodified
+ */
 void Opcodes::handleFX65(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Fill V0 to VX (including VX) with values from memory starting at address I
-    printf("%04X - %s - Fill V0 to V%01X with values from memory starting at address I\n", opcode, "FX65", vx);
+    printf("*%04X - %s - Fill V0 to V%01X with values from memory starting at address I\n", opcode, "FX65", vx);
+
+    for (int i = 0; i <= vx; i++) {
+        uint16_t value = chip8->memory[chip8->I + i];
+        chip8->V[i] = value;
+        printf("Filled V%01X with %04X\n", i, value);
+    }
 }
 
 void Opcodes::handleInvalid(uint16_t opcode) {

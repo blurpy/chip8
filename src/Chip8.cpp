@@ -24,9 +24,12 @@ void Chip8::run(const std::string &fileName) {
     const auto debugger = std::make_unique<Debugger>();
 
     const std::vector<uint8_t> &rom = romLoader->load();
+
+    memory.insert(memory.begin() + FONT_OFFSET, font.begin(), font.end());
     memory.insert(memory.begin() + ROM_OFFSET, rom.begin(), rom.end());
 
-    debugger->hexPrint(memory, ROM_OFFSET, ROM_OFFSET + rom.size());
+    debugger->hexPrint("Font", memory, FONT_OFFSET, FONT_OFFSET + font.size());
+    debugger->hexPrint("ROM", memory, ROM_OFFSET, ROM_OFFSET + rom.size());
 //    debugger->printOpcodes(opcodes, rom);
 
     running = true;
@@ -43,6 +46,8 @@ void Chip8::run(const std::string &fileName) {
 }
 
 void Chip8::mainLoop() {
+    std::cout << std::endl << "Starting main loop" << std::endl << std::endl;
+
     while (running) {
         // TODO mocked
         delayTimer = std::max(0, delayTimer - 10);

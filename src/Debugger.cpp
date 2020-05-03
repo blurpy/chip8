@@ -13,7 +13,9 @@ Debugger::~Debugger() {
     std::cout << "Debugger out" << std::endl;
 }
 
-void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int endPos) {
+void Debugger::hexPrint(const std::string &name, const std::vector<uint8_t> &vector, int startPos, int endPos) {
+    std::cout << std::endl << "Printing: " << name;
+
     int padding = LINE_LENGTH * 2;
     int paddedStartPos = std::max(0, startPos - padding);
     int paddedEndPos = std::min(endPos + padding, (int) vector.size());
@@ -31,7 +33,7 @@ void Debugger::hexPrint(const std::vector<uint8_t> &vector, int startPos, int en
         printf("%02X ", vector[i]);
     }
 
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl;
 }
 
 void Debugger::printOpcodes(const std::shared_ptr<Opcodes> &opcodes, const std::vector<uint8_t> &vector) {
