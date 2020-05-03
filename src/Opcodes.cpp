@@ -30,6 +30,8 @@ void Opcodes::handle0NNN(uint16_t opcode) {
 
     // Call RCA 1802 program at address NNN
     printf("%04X - %s - Call RCA 1802 program at address 0x%04X\n", opcode, "0NNN", nnn);
+
+    // Not implemented, and not going to
 }
 
 void Opcodes::handle00E0(uint16_t opcode) {
@@ -205,8 +207,14 @@ void Opcodes::handle8XY6(uint16_t opcode) {
     // Store the least significant bit of VX in VF and then shifts VX to the right by 1
     printf("*%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n", opcode, "8XY6", vx, vx);
 
-    chip8->V[0xF] = chip8->V[vx] & 0x0F;
-    chip8->V[vx] = chip8->V[vx] >> 1;
+    uint8_t originalValue = chip8->V[vx];
+    uint8_t lsb = originalValue & 1u; // Cut off the 7 bits to the left
+    uint8_t shiftedValue = originalValue >> 1u;
+
+    chip8->V[0xF] = lsb;
+    chip8->V[vx] = shiftedValue;
+
+    printf("LSB of 0x%02X = 0x%02X - Shifted = 0x%02X\n", originalValue, lsb, shiftedValue);
 }
 
 void Opcodes::handle8XY7(uint16_t opcode) {
@@ -214,7 +222,17 @@ void Opcodes::handle8XY7(uint16_t opcode) {
     uint16_t vy = getVY(opcode);
 
     // Set VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't
-    printf("%04X - %s - Set V%01X to V%01X minus V%01X\n", opcode, "8XY7", vx, vy, vx);
+    printf("*%04X - %s - Set V%01X to V%01X minus V%01X\n", opcode, "8XY7", vx, vy, vx);
+
+    uint8_t x = chip8->V[vx];
+    uint8_t y = chip8->V[vy];
+    uint16_t result = y - x;
+    bool borrow = result <= 255;
+
+    chip8->V[vx] = result;
+    chip8->V[0xF] = borrow;
+
+    printf("Computed %i - %i = %i (%i). Borrow: %i\n", x, y, result, (uint8_t) result, borrow);
 }
 
 void Opcodes::handle8XYE(uint16_t opcode) {
@@ -223,8 +241,14 @@ void Opcodes::handle8XYE(uint16_t opcode) {
     // Store the most significant bit of VX in VF and then shift VX to the left by 1
     printf("*%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
 
-    chip8->V[0xF] = chip8->V[vx] & 0xF0;
-    chip8->V[vx] = chip8->V[vx] << 1;
+    uint8_t originalValue = chip8->V[vx];
+    uint8_t msb = originalValue >> 7u; // Cut off the 7 bits to the right
+    uint8_t shiftedValue = originalValue << 1u;
+
+    chip8->V[0xF] = msb;
+    chip8->V[vx] = shiftedValue;
+
+    printf("MSB of 0x%02X = 0x%02X - Shifted = 0x%02X\n", originalValue, msb, shiftedValue);
 }
 
 void Opcodes::handle9XY0(uint16_t opcode) {
@@ -254,6 +278,8 @@ void Opcodes::handleBNNN(uint16_t opcode) {
 
     // Jump to the address NNN plus V0
     printf("%04X - %s - Jump to the address 0x%04X plus V0\n", opcode, "BNNN", nnn);
+
+    // TODO
 }
 
 void Opcodes::handleCXNN(uint16_t opcode) {
@@ -321,6 +347,8 @@ void Opcodes::handleEX9E(uint16_t opcode) {
 
     // Skip the next instruction if the key stored in VX is pressed
     printf("%04X - %s - Skip the next instruction if the key stored in V%01X is pressed\n", opcode, "EX9E", vx);
+
+    // TODO
 }
 
 void Opcodes::handleEXA1(uint16_t opcode) {
@@ -328,6 +356,8 @@ void Opcodes::handleEXA1(uint16_t opcode) {
 
     // Skip the next instruction if the key stored in VX isn't pressed
     printf("%04X - %s - Skip the next instruction if the key stored in V%01X isn't pressed\n", opcode, "EXA1", vx);
+
+    // TODO
 }
 
 void Opcodes::handleFX07(uint16_t opcode) {
@@ -344,6 +374,8 @@ void Opcodes::handleFX0A(uint16_t opcode) {
 
     // A key press is awaited, and then stored in VX
     printf("%04X - %s - A key press is awaited, and then stored in V%01X\n", opcode, "FX0A", vx);
+
+    // TODO
 }
 
 void Opcodes::handleFX15(uint16_t opcode) {
