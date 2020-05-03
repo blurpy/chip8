@@ -202,7 +202,10 @@ void Opcodes::handle8XY6(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Store the least significant bit of VX in VF and then shifts VX to the right by 1
-    printf("%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n", opcode, "8XY6", vx, vx);
+    printf("*%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n", opcode, "8XY6", vx, vx);
+
+    chip8->V[0xF] = chip8->V[vx] & 0x0F;
+    chip8->V[vx] = chip8->V[vx] >> 1;
 }
 
 void Opcodes::handle8XY7(uint16_t opcode) {
@@ -217,7 +220,10 @@ void Opcodes::handle8XYE(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Store the most significant bit of VX in VF and then shift VX to the left by 1
-    printf("%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
+    printf("*%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n", opcode, "8XYE", vx, vx);
+
+    chip8->V[0xF] = chip8->V[vx] & 0xF0;
+    chip8->V[vx] = chip8->V[vx] << 1;
 }
 
 void Opcodes::handle9XY0(uint16_t opcode) {
@@ -360,8 +366,12 @@ void Opcodes::handleFX18(uint16_t opcode) {
 void Opcodes::handleFX1E(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
-    // Add VX to I. VF is set to 1 when there is a range overflow, and to 0 when there isn't
-    printf("%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
+    // Add VX to I. VF is set to 1 when there is a range overflow (I+VX>0xFFF), and to 0 when there isn't
+    printf("*%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
+
+    uint16_t value = chip8->I + chip8->V[vx];
+    chip8->I = value;
+    chip8->V[0xF] = value > 0xFFF;
 }
 
 /**
@@ -410,7 +420,11 @@ void Opcodes::handleFX55(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
     // Store V0 to VX (including VX) in memory starting at address I
-    printf("%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
+    printf("*%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
+
+    for (int i = 0; i <= vx; i++) {
+        chip8->memory[chip8->I + i] = chip8->V[i];
+    }
 }
 
 /**
