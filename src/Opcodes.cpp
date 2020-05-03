@@ -102,7 +102,7 @@ void Opcodes::handle5XY0(uint16_t opcode) {
     // Skip the next instruction if VX equals VY
     printf("*%04X - %s - Skip the next instruction if V%01X equals V%01X\n", opcode, "5XY0", vx, vy);
 
-    if (chip8->V[vx] == vy) {
+    if (chip8->V[vx] == chip8->V[vy]) {
         chip8->PC +=2;
         printf("Skipping to 0x%04X\n", chip8->PC);
     }
@@ -190,12 +190,13 @@ void Opcodes::handle8XY5(uint16_t opcode) {
 
     uint8_t x = chip8->V[vx];
     uint8_t y = chip8->V[vy];
-    int result = x - y;
+    uint16_t result = x - y;
+    bool borrow = result <= 255;
 
     chip8->V[vx] = result;
-    chip8->V[0xF] = result < 0;
-    
-    printf("Computed %i - %i = %i. Borrow: %i\n", x, y, result, result < 0);
+    chip8->V[0xF] = borrow;
+
+    printf("Computed %i - %i = %i (%i). Borrow: %i\n", x, y, result, (uint8_t) result, borrow);
 }
 
 void Opcodes::handle8XY6(uint16_t opcode) {
