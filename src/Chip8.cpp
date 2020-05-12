@@ -63,7 +63,9 @@ void Chip8::tick() {
     const uint16_t opcode = fetch();
     const Opcodes::OpcodeEntry &opcodeEntry = opcodes->findOpcode(opcode);
 
-    printf("%04X - ", PC);
+    if (DEBUG_OPCODES) {
+        printf("%04X - ", PC);
+    }
 
     increaseProgramCounter();
     executeInstruction(opcode, opcodeEntry);

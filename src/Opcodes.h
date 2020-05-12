@@ -113,6 +113,8 @@ private:
     uint16_t getNNN(uint16_t opcode);
 
     unsigned int generateRandomNumber(unsigned char from, unsigned char to);
+
+    static bool debug();
 };
 
 #endif //CHIP8_OPCODES_H

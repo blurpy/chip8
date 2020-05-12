@@ -18,6 +18,7 @@ public:
     static const int FONT_OFFSET = 0x50;
     static const int FONT_CHARACTER_SIZE = 5; // Bytes
     static const int MEMORY_SIZE = 4096;
+    static const bool DEBUG_OPCODES = false;
 
     Chip8();
     ~Chip8();
