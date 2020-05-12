@@ -50,7 +50,8 @@ void Chip8::mainLoop() {
     std::cout << std::endl << "Starting main loop" << std::endl << std::endl;
 
     while (running) {
-        // TODO mocked
+        // TODO no sound
+        // TODO mocked timers
         delayTimer = std::max(0, delayTimer - 10);
         soundTimer = std::max(0, soundTimer - 10);
 
