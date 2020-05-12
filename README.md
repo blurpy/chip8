@@ -1,6 +1,12 @@
 # CHIP-8 emulator
 
-Work in progress.
+Work in progress. It's possible to play some games.
+
+What's missing:
+
+* Sound support
+* Timer accuracy
+* A few less important opcodes
 
 
 ## Requirements
@@ -17,7 +23,7 @@ $ mkdir build
 $ cd build
 $ cmake -G "CodeBlocks - Unix Makefiles" ..
 $ make
-$ ./chip8
+$ ./chip8 <rom file>
 ```
 
 ## Links
