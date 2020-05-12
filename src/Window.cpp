@@ -1,10 +1,10 @@
 #include <iostream>
+#include <utility>
 
 #include "Window.h"
 
-Window::Window(const std::string& windowTitle, int scale) {
-    this->windowTitle = windowTitle;
-    this->scale = scale;
+Window::Window(std::string windowTitle, int scale, std::shared_ptr<Keyboard> keyboard) :
+windowTitle(std::move(windowTitle)), scale(scale), keyboard(std::move(keyboard)) {
     this->width = ORIGINAL_WIDTH * scale;
     this->height = ORIGINAL_HEIGHT * scale;
 
@@ -138,6 +138,10 @@ void Window::pollEvents() {
     if (SDL_PollEvent(&windowEvent)) {
         if (windowEvent.type == SDL_QUIT) {
             closed = true;
+        } else if (windowEvent.type == SDL_KEYUP) {
+            keyboard->handleKeyUp(windowEvent.key);
+        } else if (windowEvent.type == SDL_KEYDOWN) {
+            keyboard->handleKeyDown(windowEvent.key);
         }
     }
 }

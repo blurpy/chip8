@@ -1,14 +1,17 @@
 #ifndef CHIP8_WINDOW_H
 #define CHIP8_WINDOW_H
 
+#include <memory>
 #include <vector>
 
 #include "SDL2/SDL.h"
 
+#include "Keyboard.h"
+
 class Window {
 
 public:
-    Window(const std::string& windowTitle, int scale);
+    Window(std::string windowTitle, int scale, std::shared_ptr<Keyboard> keyboard);
     ~Window();
 
     void pollEvents();
@@ -25,6 +28,7 @@ private:
     static const int ORIGINAL_HEIGHT = 32;
     static const int WHITE = 255;
 
+    std::shared_ptr<Keyboard> keyboard;
     std::string windowTitle;
     int width;
     int height;

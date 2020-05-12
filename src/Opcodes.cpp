@@ -344,20 +344,28 @@ void Opcodes::handleDXYN(uint16_t opcode) {
 
 void Opcodes::handleEX9E(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
+    uint8_t key = chip8->V[vx];
 
     // Skip the next instruction if the key stored in VX is pressed
-    printf("%04X - %s - Skip the next instruction if the key stored in V%01X is pressed\n", opcode, "EX9E", vx);
+    printf("*%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) is pressed\n", opcode, "EX9E", vx, key);
 
-    // TODO
+    if (chip8->keyIsPressed(key)) {
+        chip8->PC +=2;
+        printf("Skipping to 0x%04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handleEXA1(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
+    uint8_t key = chip8->V[vx];
 
     // Skip the next instruction if the key stored in VX isn't pressed
-    printf("%04X - %s - Skip the next instruction if the key stored in V%01X isn't pressed\n", opcode, "EXA1", vx);
+    printf("*%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) isn't pressed\n", opcode, "EXA1", vx, key);
 
-    // TODO
+    if (!chip8->keyIsPressed(key)) {
+        chip8->PC +=2;
+        printf("Skipping to 0x%04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handleFX07(uint16_t opcode) {

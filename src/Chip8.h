@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "Keyboard.h"
 #include "Window.h"
 
 #include "Opcodes.h"
@@ -27,6 +28,7 @@ private:
     friend class Opcodes;
 
     std::shared_ptr<Opcodes> opcodes;
+    std::shared_ptr<Keyboard> keyboard;
     std::unique_ptr<Window> window;
 
     std::vector<uint8_t> memory = std::vector<uint8_t>(MEMORY_SIZE); // 4096 8-bit memory locations
@@ -69,6 +71,8 @@ private:
 
     bool drawSpritePixel(unsigned int x, unsigned int y);
     void clearScreen();
+
+    bool keyIsPressed(uint8_t key);
 };
 
 #endif //CHIP8_CHIP8_H

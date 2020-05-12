@@ -10,7 +10,8 @@
 
 Chip8::Chip8() {
     opcodes = std::make_shared<Opcodes>(this);
-    window = std::make_unique<Window>("CHIP-8", 10);
+    keyboard = std::make_shared<Keyboard>();
+    window = std::make_unique<Window>("CHIP-8", 10, keyboard);
 
     std::cout << "Chip8 in" << std::endl;
 }
@@ -91,4 +92,8 @@ bool Chip8::drawSpritePixel(unsigned int x, unsigned int y) {
 
 void Chip8::clearScreen() {
     window->clearScreen();
+}
+
+bool Chip8::keyIsPressed(uint8_t key) {
+    return keyboard->keyIsPressed(key);
 }
