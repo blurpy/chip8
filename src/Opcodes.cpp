@@ -37,7 +37,7 @@ void Opcodes::handle0NNN(uint16_t opcode) {
 void Opcodes::handle00E0(uint16_t opcode) {
     // Clear screen
     if (debug()) {
-        printf("*%04X - %s - Clear screen\n", opcode, "00E0");
+        printf("%04X - %s - Clear screen\n", opcode, "00E0");
     }
 
     chip8->clearScreen();
@@ -46,7 +46,7 @@ void Opcodes::handle00E0(uint16_t opcode) {
 void Opcodes::handle00EE(uint16_t opcode) {
     // Return from subroutine
     if (debug()) {
-        printf("*%04X - %s - Return from subroutine\n", opcode, "00EE");
+        printf("%04X - %s - Return from subroutine\n", opcode, "00EE");
     }
 
     chip8->PC = chip8->stack.top();
@@ -62,7 +62,7 @@ void Opcodes::handle1NNN(uint16_t opcode) {
 
     // Jump to address NNN
     if (debug()) {
-        printf("*%04X - %s - Jump to address 0x%04X\n", opcode, "1NNN", nnn);
+        printf("%04X - %s - Jump to address 0x%04X\n", opcode, "1NNN", nnn);
     }
 
     chip8->PC = nnn;
@@ -77,7 +77,7 @@ void Opcodes::handle2NNN(uint16_t opcode) {
 
     // Call subroutine at NNN
     if (debug()) {
-        printf("*%04X - %s - Call subroutine at 0x%04X\n", opcode, "2NNN", nnn);
+        printf("%04X - %s - Call subroutine at 0x%04X\n", opcode, "2NNN", nnn);
     }
 
     chip8->stack.push(chip8->PC);
@@ -94,7 +94,7 @@ void Opcodes::handle3XNN(uint16_t opcode) {
 
     // Skip the next instruction if VX equals NN
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if V%01X (0x%02X) equals 0x%02X\n",
+        printf("%04X - %s - Skip the next instruction if V%01X (0x%02X) equals 0x%02X\n",
                 opcode, "3XNN", vx, chip8->V[vx], nn);
     }
 
@@ -113,7 +113,7 @@ void Opcodes::handle4XNN(uint16_t opcode) {
 
     // Skip the next instruction if VX doesn't equal NN
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if V%01X (0x%02X) doesn't equal 0x%02X\n",
+        printf("%04X - %s - Skip the next instruction if V%01X (0x%02X) doesn't equal 0x%02X\n",
                 opcode, "4XNN", vx, chip8->V[vx], nn);
     }
 
@@ -131,7 +131,7 @@ void Opcodes::handle5XY0(uint16_t opcode) {
 
     // Skip the next instruction if VX equals VY
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if V%01X equals V%01X\n", opcode, "5XY0", vx, vy);
+        printf("%04X - %s - Skip the next instruction if V%01X equals V%01X\n", opcode, "5XY0", vx, vy);
     }
 
     if (chip8->V[vx] == chip8->V[vy]) {
@@ -149,7 +149,7 @@ void Opcodes::handle6XNN(uint16_t opcode) {
 
     // Set VX to NN
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to 0x%02X\n", opcode, "6XNN", vx, nn);
+        printf("%04X - %s - Set V%01X to 0x%02X\n", opcode, "6XNN", vx, nn);
     }
 
     chip8->V[vx] = nn;
@@ -161,7 +161,7 @@ void Opcodes::handle7XNN(uint16_t opcode) {
 
     // Add NN to VX. (Carry flag is not changed)
     if (debug()) {
-        printf("*%04X - %s - Add 0x%02X to V%01X\n", opcode, "7XNN", nn, vx);
+        printf("%04X - %s - Add 0x%02X to V%01X\n", opcode, "7XNN", nn, vx);
     }
 
     chip8->V[vx] += nn;
@@ -173,7 +173,7 @@ void Opcodes::handle8XY0(uint16_t opcode) {
 
     // Set VX to the value of VY
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to the value of V%01X\n", opcode, "8XY0", vx, vy);
+        printf("%04X - %s - Set V%01X to the value of V%01X\n", opcode, "8XY0", vx, vy);
     }
 
     chip8->V[vx] = chip8->V[vy];
@@ -185,7 +185,7 @@ void Opcodes::handle8XY1(uint16_t opcode) {
 
     // Set VX to VX or VY. (Bitwise OR operation)
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to V%01X or V%01X\n", opcode, "8XY1", vx, vx, vy);
+        printf("%04X - %s - Set V%01X to V%01X or V%01X\n", opcode, "8XY1", vx, vx, vy);
     }
 
     chip8->V[vx] = chip8->V[vx] | chip8->V[vy];
@@ -197,7 +197,7 @@ void Opcodes::handle8XY2(uint16_t opcode) {
 
     // Set VX to VX and VY. (Bitwise AND operation)
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to V%01X and V%01X\n", opcode, "8XY2", vx, vx, vy);
+        printf("%04X - %s - Set V%01X to V%01X and V%01X\n", opcode, "8XY2", vx, vx, vy);
     }
 
     chip8->V[vx] = chip8->V[vx] & chip8->V[vy];
@@ -209,7 +209,7 @@ void Opcodes::handle8XY3(uint16_t opcode) {
 
     // Set VX to VX xor VY. (Bitwise XOR operation)
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to V%01X xor V%01X\n", opcode, "8XY3", vx, vx, vy);
+        printf("%04X - %s - Set V%01X to V%01X xor V%01X\n", opcode, "8XY3", vx, vx, vy);
     }
 
     chip8->V[vx] = chip8->V[vx] ^ chip8->V[vy];
@@ -221,7 +221,7 @@ void Opcodes::handle8XY4(uint16_t opcode) {
 
     // Add VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
     if (debug()) {
-        printf("*%04X - %s - Add V%01X to V%01X\n", opcode, "8XY4", vy, vx);
+        printf("%04X - %s - Add V%01X to V%01X\n", opcode, "8XY4", vy, vx);
     }
 
     uint16_t result = chip8->V[vx] + chip8->V[vy];
@@ -236,7 +236,7 @@ void Opcodes::handle8XY5(uint16_t opcode) {
 
     // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't
     if (debug()) {
-        printf("*%04X - %s - V%01X is subtracted from V%01X\n", opcode, "8XY5", vy, vx);
+        printf("%04X - %s - V%01X is subtracted from V%01X\n", opcode, "8XY5", vy, vx);
     }
 
     uint8_t x = chip8->V[vx];
@@ -257,7 +257,7 @@ void Opcodes::handle8XY6(uint16_t opcode) {
 
     // Store the least significant bit of VX in VF and then shifts VX to the right by 1
     if (debug()) {
-        printf("*%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n",
+        printf("%04X - %s - Store the least significant bit of V%01X in VF and then shifts V%01X to the right by 1\n",
                opcode, "8XY6", vx, vx);
     }
 
@@ -279,7 +279,7 @@ void Opcodes::handle8XY7(uint16_t opcode) {
 
     // Set VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to V%01X minus V%01X\n", opcode, "8XY7", vx, vy, vx);
+        printf("%04X - %s - Set V%01X to V%01X minus V%01X\n", opcode, "8XY7", vx, vy, vx);
     }
 
     uint8_t x = chip8->V[vx];
@@ -300,7 +300,7 @@ void Opcodes::handle8XYE(uint16_t opcode) {
 
     // Store the most significant bit of VX in VF and then shift VX to the left by 1
     if (debug()) {
-        printf("*%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n",
+        printf("%04X - %s - Store the most significant bit of V%01X in VF and then shift V%01X to the left by 1\n",
                opcode, "8XYE", vx, vx);
     }
 
@@ -322,7 +322,7 @@ void Opcodes::handle9XY0(uint16_t opcode) {
 
     // Skip the next instruction if VX doesn't equal VY
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if V%01X doesn't equal V%01X\n", opcode, "9XY0", vx, vy);
+        printf("%04X - %s - Skip the next instruction if V%01X doesn't equal V%01X\n", opcode, "9XY0", vx, vy);
     }
 
     if (chip8->V[vx] != chip8->V[vy]) {
@@ -339,7 +339,7 @@ void Opcodes::handleANNN(uint16_t opcode) {
 
     // Set I to the address NNN
     if (debug()) {
-        printf("*%04X - %s - Set I to the address 0x%04X\n", opcode, "ANNN", nnn);
+        printf("%04X - %s - Set I to the address 0x%04X\n", opcode, "ANNN", nnn);
     }
 
     chip8->I = nnn;
@@ -360,7 +360,7 @@ void Opcodes::handleCXNN(uint16_t opcode) {
 
     // Set VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and 0x%02X\n",
+        printf("%04X - %s - Set V%01X to the result of a bitwise and operation on a random number and 0x%02X\n",
                opcode, "CXNN", vx, nn);
     }
 
@@ -392,7 +392,7 @@ void Opcodes::handleDXYN(uint16_t opcode) {
 
      // Draw a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N pixels
     if (debug()) {
-        printf("*%04X - %s - Draw a sprite at coordinate (V%01X, V%01X) that has a width of 8 pixels and a height of %01X pixels\n",
+        printf("%04X - %s - Draw a sprite at coordinate (V%01X, V%01X) that has a width of 8 pixels and a height of %01X pixels\n",
                opcode, "DXYN", vx, vy, n);
     }
 
@@ -430,7 +430,7 @@ void Opcodes::handleEX9E(uint16_t opcode) {
 
     // Skip the next instruction if the key stored in VX is pressed
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) is pressed\n",
+        printf("%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) is pressed\n",
                 opcode, "EX9E", vx, key);
     }
 
@@ -449,7 +449,7 @@ void Opcodes::handleEXA1(uint16_t opcode) {
 
     // Skip the next instruction if the key stored in VX isn't pressed
     if (debug()) {
-        printf("*%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) isn't pressed\n",
+        printf("%04X - %s - Skip the next instruction if the key stored in V%01X (%01X) isn't pressed\n",
                 opcode, "EXA1", vx, key);
     }
 
@@ -467,7 +467,7 @@ void Opcodes::handleFX07(uint16_t opcode) {
 
     // Set VX to the value of the delay timer
     if (debug()) {
-        printf("*%04X - %s - Set V%01X to the value of the delay timer (0x%02X)\n", opcode, "FX07", vx,
+        printf("%04X - %s - Set V%01X to the value of the delay timer (0x%02X)\n", opcode, "FX07", vx,
                chip8->delayTimer);
     }
 
@@ -488,7 +488,7 @@ void Opcodes::handleFX15(uint16_t opcode) {
 
     // Set the delay timer to VX
     if (debug()) {
-        printf("*%04X - %s - Set the delay timer to V%01X (0x%02X)\n", opcode, "FX15", vx, chip8->V[vx]);
+        printf("%04X - %s - Set the delay timer to V%01X (0x%02X)\n", opcode, "FX15", vx, chip8->V[vx]);
     }
 
     chip8->delayTimer = chip8->V[vx];
@@ -499,7 +499,7 @@ void Opcodes::handleFX18(uint16_t opcode) {
 
     // Set the sound timer to VX
     if (debug()) {
-        printf("*%04X - %s - Set the sound timer to V%01X (0x%02X)\n", opcode, "FX18", vx, chip8->V[vx]);
+        printf("%04X - %s - Set the sound timer to V%01X (0x%02X)\n", opcode, "FX18", vx, chip8->V[vx]);
     }
 
     chip8->soundTimer = chip8->V[vx];
@@ -510,7 +510,7 @@ void Opcodes::handleFX1E(uint16_t opcode) {
 
     // Add VX to I. VF is set to 1 when there is a range overflow (I+VX>0xFFF), and to 0 when there isn't
     if (debug()) {
-        printf("*%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
+        printf("%04X - %s - Add V%01X to I\n", opcode, "FX1E", vx);
     }
 
     uint16_t value = chip8->I + chip8->V[vx];
@@ -527,7 +527,7 @@ void Opcodes::handleFX29(uint16_t opcode) {
 
     // Set I to the location of the sprite for the character in VX
     if (debug()) {
-        printf("*%04X - %s - Set I to the location of the sprite for the character in V%01X\n", opcode, "FX29", vx);
+        printf("%04X - %s - Set I to the location of the sprite for the character in V%01X\n", opcode, "FX29", vx);
     }
 
     uint8_t character = chip8->V[vx];
@@ -550,7 +550,7 @@ void Opcodes::handleFX33(uint16_t opcode) {
 
     // Store the binary-coded decimal representation of VX
     if (debug()) {
-        printf("*%04X - %s - Store the binary-coded decimal representation of V%01X\n", opcode, "FX33", vx);
+        printf("%04X - %s - Store the binary-coded decimal representation of V%01X\n", opcode, "FX33", vx);
     }
 
     uint8_t value = chip8->V[vx];
@@ -573,7 +573,7 @@ void Opcodes::handleFX55(uint16_t opcode) {
 
     // Store V0 to VX (including VX) in memory starting at address I
     if (debug()) {
-        printf("*%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
+        printf("%04X - %s - Store V0 to V%01X in memory starting at address I\n", opcode, "FX55", vx);
     }
 
     for (int i = 0; i <= vx; i++) {
@@ -590,7 +590,7 @@ void Opcodes::handleFX65(uint16_t opcode) {
 
     // Fill V0 to VX (including VX) with values from memory starting at address I
     if (debug()) {
-        printf("*%04X - %s - Fill V0 to V%01X with values from memory starting at address I\n", opcode, "FX65", vx);
+        printf("%04X - %s - Fill V0 to V%01X with values from memory starting at address I\n", opcode, "FX65", vx);
     }
 
     for (int i = 0; i <= vx; i++) {
