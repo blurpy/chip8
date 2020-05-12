@@ -119,6 +119,7 @@ void Opcodes::handle4XNN(uint16_t opcode) {
 
     if (chip8->V[vx] != nn) {
         chip8->PC +=2;
+
         if (debug()) {
             printf("Skipping to 0x%04X\n", chip8->PC);
         }
