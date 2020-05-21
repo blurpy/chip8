@@ -5,7 +5,6 @@ Work in progress. It's possible to play some games.
 What's missing:
 
 * Sound support
-* Timer accuracy
 * A few less important opcodes
 
 

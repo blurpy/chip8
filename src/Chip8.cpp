@@ -12,6 +12,7 @@ Chip8::Chip8() {
     opcodes = std::make_shared<Opcodes>(this);
     keyboard = std::make_shared<Keyboard>();
     window = std::make_unique<Window>("CHIP-8", 10, keyboard);
+    timer = std::make_unique<Timer>();
 
     std::cout << "Chip8 in" << std::endl;
 }
@@ -48,15 +49,18 @@ void Chip8::run(const std::string &fileName) {
 
 void Chip8::mainLoop() {
     std::cout << std::endl << "Starting main loop" << std::endl << std::endl;
+    timer->init();
 
     while (running) {
         // TODO no sound
-        // TODO mocked timers
-        delayTimer = std::max(0, delayTimer - 10);
-        soundTimer = std::max(0, soundTimer - 10);
-
         tick();
-        sleep(5);
+
+        if (timer->tick()) {
+            delayTimer = std::max(0, delayTimer - 1);
+            soundTimer = std::max(0, soundTimer - 1);
+        }
+
+        sleep(1);
     }
 }
 
