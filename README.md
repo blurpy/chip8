@@ -2,10 +2,7 @@
 
 Fully functional emulator for CHIP-8 roms built with C++17 and SDL2.
 
-Less common opcodes are not implemented (yet):
-
-* 0NNN - Call RCA 1802 program at address NNN
-* BNNN - Jumps to the address NNN plus V0
+All opcodes are implemented with the exception of `0NNN`, the opcode for calling RCA 1802 programs.
 
 
 ## Requirements

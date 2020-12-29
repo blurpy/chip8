@@ -348,11 +348,19 @@ void Opcodes::handleANNN(uint16_t opcode) {
 
 void Opcodes::handleBNNN(uint16_t opcode) {
     uint16_t nnn = getNNN(opcode);
+    uint8_t v0 = chip8->V[0];
 
     // Jump to the address NNN plus V0
-    printf("%04X - %s - Jump to the address 0x%04X plus V0\n", opcode, "BNNN", nnn);
+    if (debug()) {
+        printf("%04X - %s - Jump to the address 0x%04X plus V0 (0x%02X)\n", opcode, "BNNN", nnn, v0);
+    }
 
-    // TODO
+    // Note: unverified implementation - have been unable to find roms with this instruction.
+    chip8->PC = nnn + v0;
+
+    if (debug()) {
+        printf("Jumped to 0x%04X\n", chip8->PC);
+    }
 }
 
 void Opcodes::handleCXNN(uint16_t opcode) {
