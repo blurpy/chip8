@@ -107,3 +107,14 @@ bool Keyboard::keyIsPressed(uint8_t key) {
 
     return false;
 }
+
+uint8_t Keyboard::getCurrentKeyPressed() {
+    for (int i = 0; i < keyboard.size(); i++) {
+        if (keyboard[i]) {
+            keyboard[i] = false; // Reset key press
+            return i;
+        }
+    }
+
+    return NO_KEY_PRESSED;
+}

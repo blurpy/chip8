@@ -478,10 +478,17 @@ void Opcodes::handleFX07(uint16_t opcode) {
 void Opcodes::handleFX0A(uint16_t opcode) {
     uint16_t vx = getVX(opcode);
 
-    // A key press is awaited, and then stored in VX
-    printf("%04X - %s - A key press is awaited, and then stored in V%01X\n", opcode, "FX0A", vx);
+    // A key press is awaited, and then stored in VX. Blocking Operation. All instruction halted until next key event.
+    if (debug()) {
+        printf("%04X - %s - A key press is awaited, and then stored in V%01X\n", opcode, "FX0A", vx);
+    }
 
-    // TODO
+    printf("%04X - %s - Press a key to continue\n", opcode, "FX0A");
+
+    uint8_t key = chip8->waitForKeyPress();
+    chip8->V[vx] = key;
+
+    printf("%04X - %s - Key: %01X\n", opcode, "FX0A", key);
 }
 
 void Opcodes::handleFX15(uint16_t opcode) {

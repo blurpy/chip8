@@ -114,3 +114,14 @@ void Chip8::clearScreen() {
 bool Chip8::keyIsPressed(uint8_t key) {
     return keyboard->keyIsPressed(key);
 }
+
+uint8_t Chip8::waitForKeyPress() {
+    uint8_t currentKey;
+
+    do {
+        currentKey = keyboard->getCurrentKeyPressed();
+        sleep(1);
+    } while (running && currentKey == Keyboard::NO_KEY_PRESSED);
+
+    return currentKey;
+}

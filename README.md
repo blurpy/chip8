@@ -6,7 +6,6 @@ Less common opcodes are not implemented (yet):
 
 * 0NNN - Call RCA 1802 program at address NNN
 * BNNN - Jumps to the address NNN plus V0
-* FX0A - A key press is awaited, and then stored in VX
 
 
 ## Requirements

@@ -79,6 +79,7 @@ private:
     void clearScreen();
 
     bool keyIsPressed(uint8_t key);
+    uint8_t waitForKeyPress();
 };
 
 #endif //CHIP8_CHIP8_H
