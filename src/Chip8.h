@@ -10,6 +10,7 @@
 #include "Window.h"
 
 #include "Opcodes.h"
+#include "Sound.h"
 #include "Timer.h"
 
 class Chip8 {
@@ -33,6 +34,7 @@ private:
     std::shared_ptr<Keyboard> keyboard;
     std::unique_ptr<Window> window;
     std::unique_ptr<Timer> timer;
+    std::unique_ptr<Sound> sound;
 
     std::vector<uint8_t> memory = std::vector<uint8_t>(MEMORY_SIZE); // 4096 8-bit memory locations
 
@@ -70,6 +72,7 @@ private:
     uint16_t fetch();
     void increaseProgramCounter();
     void executeInstruction(uint16_t opcode, const Opcodes::OpcodeEntry &opcodeEntry) const;
+    void doSound();
     void sleep(int milliseconds) const;
 
     bool drawSpritePixel(unsigned int x, unsigned int y);

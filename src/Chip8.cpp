@@ -13,6 +13,7 @@ Chip8::Chip8() {
     keyboard = std::make_shared<Keyboard>();
     window = std::make_unique<Window>("CHIP-8", 10, keyboard);
     timer = std::make_unique<Timer>();
+    sound = std::make_unique<Sound>();
 
     std::cout << "Chip8 in" << std::endl;
 }
@@ -52,7 +53,6 @@ void Chip8::mainLoop() {
     timer->init();
 
     while (running) {
-        // TODO no sound
         tick();
 
         if (timer->tick()) {
@@ -74,6 +74,8 @@ void Chip8::tick() {
 
     increaseProgramCounter();
     executeInstruction(opcode, opcodeEntry);
+    doSound();
+
     window->redraw();
 }
 
@@ -87,6 +89,14 @@ void Chip8::increaseProgramCounter() {
 
 void Chip8::executeInstruction(const uint16_t opcode, const Opcodes::OpcodeEntry &opcodeEntry) const {
     (opcodes.get()->*opcodeEntry.handler)(opcode);
+}
+
+void Chip8::doSound() {
+    if (soundTimer > 0) {
+        sound->play();
+    } else {
+        sound->pause();
+    }
 }
 
 void Chip8::sleep(int milliseconds) const {

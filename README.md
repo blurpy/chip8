@@ -1,11 +1,12 @@
 # CHIP-8 emulator
 
-Work in progress. It's possible to play some games.
+Fully functional emulator for CHIP-8 roms built with C++17 and SDL2.
 
-What's missing:
+Less common opcodes are not implemented (yet):
 
-* Sound support
-* A few less important opcodes
+* 0NNN - Call RCA 1802 program at address NNN
+* BNNN - Jumps to the address NNN plus V0
+* FX0A - A key press is awaited, and then stored in VX
 
 
 ## Requirements
