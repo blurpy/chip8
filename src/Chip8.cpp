@@ -28,6 +28,10 @@ void Chip8::run(const std::string &fileName) {
 
     const std::vector<uint8_t> &rom = romLoader->load();
 
+    if (rom.empty()) {
+        return; // Quit if unable to load the rom
+    }
+
     memory.insert(memory.begin() + FONT_OFFSET, font.begin(), font.end());
     memory.insert(memory.begin() + ROM_OFFSET, rom.begin(), rom.end());
 
