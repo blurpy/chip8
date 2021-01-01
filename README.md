@@ -2,6 +2,8 @@
 
 Fully functional emulator for CHIP-8 roms built with C++17 and SDL2.
 
+![Emulator running Space Invaders](space_invaders.png)
+
 All opcodes are implemented with the exception of `0NNN`, the opcode for calling RCA 1802 programs.
 
 
