@@ -37,6 +37,7 @@ Links I used to learn about CHIP-8.
 * http://www.emulator101.com/introduction-to-chip-8.html
 * http://mattmik.com/files/chip8/mastering/chip8.html
 * http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+* https://cgmathprog.home.blog/2021/05/20/chip-8-and-emulator-overview/
 
 
 #### Videos
